@@ -4,9 +4,13 @@ const SECRET_KEY = process.env.SECRET_KEY || 'otherworldly place to be';
 
 const auth = async (req, res, next) => {
   try {
+    // console.log('HELLOOO');
+
     const token = req.header('Authorization').replace('Bearer ', '');
+    console.log(token);
     const { _id } = jwt.verify(token, SECRET_KEY);
-    const user = UserModel.findOne({ _id });
+    const user = await UserModel.findOne({ _id });
+    console.log('USER!: ', user, _id);
     if (!user) {
       throw new Error();
     }

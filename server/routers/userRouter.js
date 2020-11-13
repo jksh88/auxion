@@ -38,7 +38,8 @@ router.post('/users/login', async (req, res) => {
     if (!isMatch) {
       throw new Error('Login failed');
     } else {
-      res.send(`Welcome back, ${user.name}!`);
+      const token = jwt.sign({ _id: user._id }, SECRET_KEY);
+      res.send(token);
     }
   } catch (err) {
     res.status(400).send();

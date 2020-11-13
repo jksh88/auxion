@@ -25,14 +25,6 @@ const userSchema = new Schema({
       }
     },
   },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
 });
 
 // userSchema.pre('save', async function (next) {

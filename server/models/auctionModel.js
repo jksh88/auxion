@@ -7,7 +7,8 @@ const auctionSchema = new Schema({
   bidder: { type: { bidder_id: String, bidder_last_name: String } },
   bid_id: { type: String },
   date_listed: { type: Date, default: Date.now, required: true },
-  auction_start_time: { type: Date },
+
+  auction_start_time: { type: Date, default: Date.now },
   auction_end_time: { type: Date },
 });
 
