@@ -25,8 +25,19 @@ const userSchema = new Schema({
       }
     },
   },
+  properties: [
+    {
+      ref: 'PropertyModel',
+      type: Schema.Types.ObjectId,
+    },
+  ],
 });
 
+// userSchema.virtual('properties', {
+//   ref: 'PropertyModel',
+//   localField: '_id',
+//   foreignField: 'owner',
+// });
 // userSchema.pre('save', async function (next) {
 //   const user = this;
 //   console.log(this);

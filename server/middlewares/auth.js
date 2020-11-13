@@ -10,6 +10,7 @@ const auth = async (req, res, next) => {
     console.log(token);
     const { _id } = jwt.verify(token, SECRET_KEY);
     const user = await UserModel.findOne({ _id });
+    await user.populate('properties').execPopulate();
     console.log('USER!: ', user, _id);
     if (!user) {
       throw new Error();
