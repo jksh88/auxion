@@ -10,6 +10,11 @@ const propertySchema = new Schema({
     required: true,
     ref: 'UserModel',
   },
+  auction: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: 'AuctionModel',
+  },
 });
 
 const PropertyModel = mongoose.model('PropertyModel', propertySchema);

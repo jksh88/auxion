@@ -1,15 +1,23 @@
 const { Model, Schema } = require('mongoose');
 
 const auctionSchema = new Schema({
-  starting_price: { type: Number, required: true },
-  bid_increment: { type: Number, required: true },
-  current_highest_bid: { type: Number, required: true },
-  bidder: { type: { bidder_id: String, bidder_last_name: String } },
-  //   bid_id: { type: String },
-  date_listed: { type: Date, default: Date.now, required: true },
-
-  auction_start_time: { type: Date, default: Date.now },
-  auction_end_time: { type: Date },
+  startPrice: { type: Number, required: true },
+  currentHighestBid: {
+    type: Number,
+    required: true,
+    bidder: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'UserModel',
+    },
+  },
+  auctionStartTime: { type: Date, default: Date.now },
+  auctionEndTime: { type: Date },
+  propertyOnSale: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: 'PropertyModel',
+  },
 });
 
 const AuctionModel = Model('AuctionModel', auctionSchema);

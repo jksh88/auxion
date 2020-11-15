@@ -31,6 +31,4 @@ router.get('/properties', async (req, res) => {
   }
 });
 
-router.delete('/properties/:id');
-
 module.exports = router;
