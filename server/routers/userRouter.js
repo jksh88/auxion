@@ -6,7 +6,7 @@ const SECRET_KEY = process.env.SECRET_KEY || 'otherworldly place to be';
 const jwt = require('jsonwebtoken');
 const auth = require('../middlewares/auth');
 
-router.post('/users/register', async (req, res) => {
+router.post('/register', async (req, res) => {
   const { email, password } = req.body;
   const user = await UserModel.findOne({ email });
   if (user) {
@@ -27,7 +27,7 @@ router.get('/users/me', auth, async (req, res) => {
   res.send(req.user);
 });
 
-router.post('/users/login', async (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await UserModel.findOne({ email });

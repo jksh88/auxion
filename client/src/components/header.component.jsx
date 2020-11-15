@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import auth from '../utils/auth';
 import './header.styles.css';
 
 const Header = ({ isAuthenticated }) => {
@@ -9,9 +10,17 @@ const Header = ({ isAuthenticated }) => {
         LOGO TO COME
       </Link>
       <div className="options">
-        <Link to="/info" className="option">
-          HOW IT WORKS
-        </Link>
+        {isAuthenticated ? (
+          <div className="option">
+            <div onClick={() => auth.logout()}>LOG OUT</div>
+            <Link to="/profile">MY PROFILE</Link>
+          </div>
+        ) : (
+          <div className="option">
+            <Link to="/register">REGISTER</Link>
+            <Link to="/login">LOG IN</Link>
+          </div>
+        )}
       </div>
     </div>
   );
