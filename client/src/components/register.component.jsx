@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import auth from '../utils/auth';
-import apiSvc from '../utils/apiSvc';
+// import apiSvc from '../utils/apiSvc';
+import axiosSvc from '../utils/axiosSvc';
+import CustomButton from './custom-button.component';
+// import axios from 'axios';
 
 const initialState = {
   name: '',
@@ -20,14 +23,20 @@ const Register = ({ setIsAuthenticated, history }) => {
     evt.preventDefault();
     const { name, email, password } = state;
     const user = { name, email, password }; //ES6 syntax
-    const res = await apiSvc.register(user);
+    console.log('USER FROM INPUT FORM IS..', user);
+    // const res = await apiSvc.register(user);
+    const res = await axiosSvc.register(user);
+
+    // const res = await axios.post('http://localhost:3000/register', user);
+    console.log('RES is.... ', res);
+    console.log(res.error);
 
     if (res.error) {
       alert(`${res.message}`);
       setState(initialState);
     } else {
       const { token } = res;
-      window.localStorage.setItem('accessToken', token);
+      localStorage.setItem('accessToken', token);
       setIsAuthenticated(true);
       auth.login(() => history.push('/profile'));
     }
@@ -57,6 +66,7 @@ const Register = ({ setIsAuthenticated, history }) => {
           value={state.password}
           onChange={handleChange}
         />
+        <CustomButton>SIGN ME UP</CustomButton>
       </form>
     </div>
   );

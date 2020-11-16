@@ -9,7 +9,7 @@ import PropertyList from './components/propertyList.component';
 
 function App() {
   const initialState = auth.isAuthenticated();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(initialState);
 
   return (
     <div className="App">

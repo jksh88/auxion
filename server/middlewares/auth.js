@@ -12,7 +12,7 @@ const auth = async (req, res, next) => {
     const user = await UserModel.findOne({ _id });
 
     await user.populate('properties').execPopulate();
-    console.log('USER!: ', user, _id);
+    console.log('USER hitting Auth middleware backend!: ', user, _id);
     if (!user) {
       throw new Error();
     }

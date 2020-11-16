@@ -14,7 +14,7 @@ class Auth {
   }
 
   isAuthenticated() {
-    return this.isAuthenticated;
+    return this.authenticated;
   }
 }
 

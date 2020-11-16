@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const auth = require('../middlewares/auth');
 
 router.post('/register', async (req, res) => {
+  console.log('EMAIL FOR REGSITER IS...', req.body.email);
   const { email, password } = req.body;
   const user = await UserModel.findOne({ email });
   if (user) {
@@ -23,12 +24,17 @@ router.post('/register', async (req, res) => {
   }
 });
 
-router.get('/users/me', auth, async (req, res) => {
-  res.send(req.user);
+router.get('/me', auth, async (req, res) => {
+  try {
+    res.send(req.user);
+  } catch (err) {
+    res.status(404).send(err);
+  }
 });
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
+  console.log('TEST: ', email);
   try {
     const user = await UserModel.findOne({ email });
     if (!user) {
