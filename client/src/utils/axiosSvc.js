@@ -7,7 +7,7 @@ const axiosSvc = {};
 axiosSvc.login = (user) => {
   return axios
     .post(`${BASE_URL}/login`, user)
-    .then((res) => res.text())
+    .then((res) => res.data)
     .catch((err) => console.log(err));
 };
 

@@ -34,7 +34,7 @@ const Profile = (props) => {
   //Need to display my property and auction status information below.
   return (
     <div>
-      <h2>Welcome back, {name}</h2>
+      <h2>Good day, {name}</h2>
       <h2>My Property </h2>
     </div>
   );
