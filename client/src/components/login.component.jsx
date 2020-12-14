@@ -31,7 +31,7 @@ const Login = (props) => {
       alert(`${res.message}`);
       setState(initialState);
     } else {
-      const token = res;
+      const { token } = res; //wrapped in braces on 11/1/2000
       console.log('TOKEN IS... :', token);
       window.localStorage.setItem('accessToken', token);
 
