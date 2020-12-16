@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-// import auth from '../utils/auth';
-// import axiosSvc from '../utils/axiosSvc';
 import axios from 'axios';
-import CustomButton from './custom-button.component';
+// import CustomButton from './custom-button.component';
 
 // const initialState = {
 //   address: '',

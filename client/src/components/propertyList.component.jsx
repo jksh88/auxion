@@ -7,9 +7,9 @@ const PropertyList = () => {
   const [properties, setProperties] = useState([]);
   useEffect(() => {
     return axios
-      .get('http://localhost:3000/properties')
+      .get('http://localhost:8000/properties')
       .then((res) => {
-        console.log(res.data);
+        console.log('RESPONSE DATA: ', res.data);
         setProperties(res.data);
       })
       .catch((err) => console.log(err));
