@@ -2,13 +2,17 @@ import React from 'react';
 import './propertyDetails.styles.css';
 
 const PropertyDetails = ({ address, photo }) => {
+  console.log('PHOTO ', photo);
   return (
     <div className="property-details">
       <ul className="cards">
-        <li className="cards_item">
+        <li className="cards_item" style={{ minWidth: '20rem' }}>
           <div className="card">
             <div className="card_image">
-              <img src={`${photo}`} />
+              <img
+                src={`http://localhost:8000/images/${photo}`}
+                alt="property photo"
+              />
               <div className="card_content">
                 <h2 className="address">{address}</h2>
                 <p className="card_text">

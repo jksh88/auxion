@@ -7,7 +7,7 @@ const Landing = () => {
     <div>
       <h1>
         Place your bids for timed for-sale-by-owner auctions to be the winning
-        bidder to be accepted
+        bidder
       </h1>
       <PropertyList />
     </div>

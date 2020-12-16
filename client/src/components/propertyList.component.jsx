@@ -10,6 +10,7 @@ const PropertyList = () => {
       .get('http://localhost:8000/properties')
       .then((res) => {
         console.log('RESPONSE DATA: ', res.data);
+
         setProperties(res.data);
       })
       .catch((err) => console.log(err));
