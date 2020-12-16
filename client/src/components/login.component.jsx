@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
-const { NEXT_PUBLIC_SERVER_URL } = process.env;
+const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const initialState = {
   email: '',
@@ -31,7 +31,7 @@ const Login = (props) => {
     setButtonEnabled(false);
 
     console.log(state);
-    const res = await fetch(`http://localhost:8000/login`, {
+    const res = await fetch(`${REACT_APP_SERVER_URL}/login`, {
       method: 'POST',
       // credentials: 'include',
       mode: 'cors',
@@ -47,12 +47,12 @@ const Login = (props) => {
       localStorage.setItem('User', JSON.stringify(user));
       //push the whole user into localStorage
       const { history } = props;
-      history && history.push('https://amazon.com');
+      setState({ email: '', password: '' });
+      history && history.push('/');
     } else {
       alert('Login failed');
       // throw new Error();
     }
-    setState({ email: '', password: '' });
   };
 
   return (

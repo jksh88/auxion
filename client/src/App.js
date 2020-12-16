@@ -5,6 +5,7 @@ import Navbar from './components/navbar.component';
 // import Register from './components/register.component';
 import Login from './components/login.component';
 import Landing from './components/landing.component';
+
 // import Profile from '../profile.component';
 // import Logout from './components/logout.component';
 

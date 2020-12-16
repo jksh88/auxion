@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-// import CustomButton from './custom-button.component';
 
-// const initialState = {
-//   address: '',
-//   selectedPhoto: null,
-// };
+const { PUBLIC_SERVER_URL } = process.env;
 
 const ListProperty = (props) => {
   const [address, setAddress] = useState('');
@@ -30,7 +26,7 @@ const ListProperty = (props) => {
     formData.append('upload', filename);
     console.log(formData);
     try {
-      axios.post('http://localhost:3000/listproperty', formData, {
+      axios.post(`${PUBLIC_SERVER_URL}/listproperty`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
     } catch (err) {

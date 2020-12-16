@@ -4,6 +4,8 @@ const cors = require('cors');
 const propertyRouter = require('./routers/propertyRouter');
 const userRouter = require('./routers/userRouter');
 const mongoose = require('mongoose');
+require('dotenv').config();
+
 // const PropertyModel = require('./models/propertyModel');
 
 app.use(cors());
@@ -12,7 +14,7 @@ app.use(userRouter);
 app.use(propertyRouter);
 app.use(express.static('public'));
 
-mongoose.connect('mongodb://127.0.0.1:27017/property-auction-api', {
+mongoose.connect(process.env.DB_URL, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
