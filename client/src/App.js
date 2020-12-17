@@ -5,6 +5,7 @@ import Navbar from './components/navbar.component';
 // import Register from './components/register.component';
 import Login from './components/login.component';
 import Landing from './components/landing.component';
+import ListProperty from './components/listProperty.component';
 
 // import Profile from '../profile.component';
 // import Logout from './components/logout.component';
@@ -18,6 +19,7 @@ function App() {
           {/* <Route exact path="/register" component={register.component} /> */}
           <Route exact path="/login" component={Login} />
           <Route exact path="/" component={Landing} />
+          <Route exact path="/listproperty" component={ListProperty} />
         </Switch>
       </BrowserRouter>
     </div>

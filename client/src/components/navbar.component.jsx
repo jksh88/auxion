@@ -17,7 +17,7 @@ const Navbar = () => {
         className="nav-left"
         style={{ width: '10%', display: 'flex', justifyContent: 'flex-end' }}
       >
-        <Link href="/">
+        <Link to="/">
           <h1 className="logo">LOGO</h1>
         </Link>
       </div>

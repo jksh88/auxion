@@ -32,32 +32,32 @@ const ListProperty = (props) => {
     } catch (err) {
       console.log(err);
     }
-    //   fetch(`http://localhost:3000/listproperty'`, {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'multipart/form-data' },
-    //     body: formData,
-    //   });
-    // };
-    return (
-      <div>
-        <h2>Property Listing Form</h2>
-        <span>Provide property address and Photo</span>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={address}
-            onChange={handleAddressChange}
-            name={address}
-            placeholder="Enter address"
-          />
-          <br />
-          <input type="file" onChange={handlePhotoSelect} />
-          {/* <input type="submit" value="click"></input> */}
-          <CustomButton>List My Property!</CustomButton>
-        </form>
-      </div>
-    );
   };
+  //   fetch(`http://localhost:3000/listproperty'`, {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'multipart/form-data' },
+  //     body: formData,
+  //   });
+  // };
+  return (
+    <div>
+      <h2>Property Listing Form</h2>
+      <span>Provide property address and Photo</span>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={address}
+          onChange={handleAddressChange}
+          name={address}
+          placeholder="Enter address"
+        />
+        <br />
+        <input type="file" onChange={handlePhotoSelect} />
+        {/* <input type="submit" value="click"></input> */}
+        <button>List My Property!</button>
+      </form>
+    </div>
+  );
 };
 
 export default ListProperty;
