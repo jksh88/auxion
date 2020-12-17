@@ -19,7 +19,7 @@ const PropertyList = () => {
   return (
     <div className="property-list">
       {properties.map(({ _id, ...otherProps }) => (
-        <PropertyDetails key={_id} {...otherProps} />
+        <PropertyDetails key={_id} {...otherProps} id={_id} />
       ))}
     </div>
   );

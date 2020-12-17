@@ -3,12 +3,14 @@ const PropertyModel = require('../models/propertyModel');
 const router = new express.Router();
 const auth = require('../middlewares/auth');
 const UserModel = require('../models/userModel');
+// const multer = require('multer');
 
-router.post('/properties/listproperty', auth, async (req, res) => {
+router.post('/listproperty', auth, async (req, res) => {
   const property = new PropertyModel({
     ...req.body,
-    owner: req.user._id,
+    // owner: req.user._id,
   });
+  console.log('REQUEST from FE: ', req.body);
   await UserModel.findByIdAndUpdate(req.user._id, {
     $push: { properties: property._id },
   });

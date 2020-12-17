@@ -1,5 +1,4 @@
 import React from 'react';
-import Navbar from './navbar.component';
 import PropertyList from './propertyList.component';
 
 const Landing = () => {

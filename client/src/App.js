@@ -6,6 +6,7 @@ import Navbar from './components/navbar.component';
 import Login from './components/login.component';
 import Landing from './components/landing.component';
 import ListProperty from './components/listProperty.component';
+import AuctionPage from './components/auctionPage.component';
 
 // import Profile from '../profile.component';
 // import Logout from './components/logout.component';
@@ -20,6 +21,7 @@ function App() {
           <Route exact path="/login" component={Login} />
           <Route exact path="/" component={Landing} />
           <Route exact path="/listproperty" component={ListProperty} />
+          <Route exact path="/property/:id" component={AuctionPage} />
         </Switch>
       </BrowserRouter>
     </div>

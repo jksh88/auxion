@@ -1,8 +1,14 @@
 import React from 'react';
 import './propertyDetails.styles.css';
+import { useHistory } from 'react-router-dom';
 
-const PropertyDetails = ({ address, photo }) => {
+const PropertyDetails = ({ address, photo, id }) => {
+  const history = useHistory();
   console.log('PHOTO ', photo);
+  const handleClick = () => {
+    history.push(`/login?from=${id}`);
+  };
+
   return (
     <div className="property-details">
       <ul className="cards">
@@ -18,7 +24,9 @@ const PropertyDetails = ({ address, photo }) => {
                 <p className="card_text">
                   Click the button to see details and place your bid
                 </p>
-                <button className="btn">Details</button>
+                <button className="btn" onClick={handleClick}>
+                  Details
+                </button>
               </div>
             </div>
           </div>

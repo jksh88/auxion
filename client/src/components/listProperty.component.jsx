@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const { PUBLIC_SERVER_URL } = process.env;
+const { REACT_APP_SERVER_URL } = process.env;
 
 const ListProperty = (props) => {
   const [address, setAddress] = useState('');
   const [file, setFile] = useState(null);
-  const [filename, setFilename] = useState('Choose File');
+  // const [filename, setFilename] = useState('Choose File');
   // const { address, selectedPhoto } = propertyInfo;
   // const formData = new FormData();
 
@@ -16,24 +16,24 @@ const ListProperty = (props) => {
 
   const handlePhotoSelect = (evt) => {
     setFile(evt.target.files[0]);
-    setFilename(evt.target.files[0].name);
+    // setFilename(evt.target.files[0].name);
   };
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
     const formData = new FormData();
     formData.append('address', address);
-    formData.append('upload', filename);
-    console.log(formData);
+    formData.append('file', file, file.name);
+    console.log([...formData.entries()]);
     try {
-      axios.post(`${PUBLIC_SERVER_URL}/listproperty`, formData, {
+      axios.post(`${REACT_APP_SERVER_URL}/listproperty`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
     } catch (err) {
       console.log(err);
     }
   };
-  //   fetch(`http://localhost:3000/listproperty'`, {
+  //   fetch(`http://localhost:8000/listproperty'`, {
   //     method: 'POST',
   //     headers: { 'Content-Type': 'multipart/form-data' },
   //     body: formData,

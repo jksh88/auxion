@@ -4,11 +4,26 @@ const cors = require('cors');
 const propertyRouter = require('./routers/propertyRouter');
 const userRouter = require('./routers/userRouter');
 const mongoose = require('mongoose');
+// const bodyParser = require('body-parser');
+const multer = require('multer');
+// const upload = multer({ dest: 'public/images' });
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/images');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 require('dotenv').config();
 
 // const PropertyModel = require('./models/propertyModel');
 
 app.use(cors());
+app.use(upload.single('file', (req) => {}));
+// app.use(bodyParser());
 app.use(express.json());
 app.use(userRouter);
 app.use(propertyRouter);

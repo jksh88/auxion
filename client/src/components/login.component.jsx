@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams } from 'react-router-dom';
 
 const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -12,6 +12,11 @@ const Login = (props) => {
   const [state, setState] = useState(initialState);
   const [buttonEnabled, setButtonEnabled] = useState(false);
   // const router = useRouter();
+  // const { from } = useParams();
+  const { history } = props;
+  // console.log('FROMMMM ', from);
+
+  const id = new URLSearchParams(history.location.search).get('from');
 
   const { email, password } = state;
 
@@ -46,9 +51,9 @@ const Login = (props) => {
       localStorage.setItem('accessToken', token);
       localStorage.setItem('User', JSON.stringify(user));
       //push the whole user into localStorage
-      const { history } = props;
+
       setState({ email: '', password: '' });
-      history && history.push('/');
+      history && history.push(id ? `property/${id}` : '/');
     } else {
       alert('Login failed');
       // throw new Error();
