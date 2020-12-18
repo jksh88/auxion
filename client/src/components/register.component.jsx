@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+
 const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const initialState = {
@@ -50,26 +51,73 @@ const Register = (props) => {
     <div className="register">
       <h2>I do not have an account</h2>
       <span>Sign up with your email and password</span>
-      <form className="register-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="firstname lastname"
-          value={state.name}
-          onChange={handleChange}
-        />
-        <input
-          type="email"
-          name="email"
-          value={state.email}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="password"
-          value={state.password}
-          onChange={handleChange}
-        />
+      <form
+        className="form"
+        onSubmit={handleSubmit}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '30vw',
+          margin: '0 auto',
+          marginTop: '8vw',
+          justifyContent: 'space-around',
+          height: '35vw',
+          border: '1px solid grey',
+          borderRadius: '1rem',
+          padding: '3rem',
+        }}
+      >
+        <div className="field">
+          <label>Name</label>
+          <input
+            type="text"
+            name="name"
+            placeholder="firstname lastname"
+            value={state.name}
+            onChange={handleChange}
+            style={{
+              width: '100%',
+              letterSpacing: '.2rem',
+              height: '2rem',
+              border: 'none',
+              borderBottom: '1px solid grey',
+            }}
+          />
+        </div>
+        <div className="field">
+          <label>Email</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="email"
+            value={state.email}
+            onChange={handleChange}
+            style={{
+              width: '100%',
+              letterSpacing: '.2rem',
+              height: '2rem',
+              border: 'none',
+              borderBottom: '1px solid grey',
+            }}
+          />
+        </div>
+        <div className="field">
+          <label>Password</label>
+          <input
+            type="text"
+            name="password"
+            placeholder="password"
+            value={state.password}
+            onChange={handleChange}
+            style={{
+              width: '100%',
+              letterSpacing: '.3rem',
+              height: '2rem',
+              border: 'none',
+              borderBottom: '1px solid grey',
+            }}
+          />
+        </div>
         <button>SIGN ME UP</button>
       </form>
     </div>
