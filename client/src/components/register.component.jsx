@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import auth from '../utils/auth';
-// import apiSvc from '../utils/apiSvc';
-import axiosSvc from '../utils/axiosSvc';
-import CustomButton from './custom-button.component';
-// import axios from 'axios';
+import axios from 'axios';
+const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const initialState = {
   name: '',
@@ -11,7 +8,7 @@ const initialState = {
   password: '',
 };
 
-const Register = ({ setIsAuthenticated, history }) => {
+const Register = (props) => {
   const [state, setState] = useState(initialState);
 
   const handleChange = (evt) => {
@@ -25,20 +22,27 @@ const Register = ({ setIsAuthenticated, history }) => {
     const user = { name, email, password }; //ES6 syntax
     console.log('USER FROM INPUT FORM IS..', user);
     // const res = await apiSvc.register(user);
-    const res = await axiosSvc.register(user);
 
-    // const res = await axios.post('http://localhost:3000/register', user);
+    // const res = await axios.post(`${REACT_APP_SERVER_URL}/register`, user);
+    const res = await fetch(`${REACT_APP_SERVER_URL}/register`, {
+      method: 'POST',
+      // credentials: 'include',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user),
+    });
+
     console.log('RES is.... ', res);
     console.log(res.error);
 
-    if (res.error) {
+    if (!res.ok) {
       alert(`${res.message}`);
       setState(initialState);
     } else {
       const { token } = res;
       localStorage.setItem('accessToken', token);
-      setIsAuthenticated(true);
-      auth.login(() => history.push('/profile'));
+      // setIsAuthenticated(true);
+      // auth.login(() => history.push('/profile'));
     }
   };
 
@@ -66,7 +70,7 @@ const Register = ({ setIsAuthenticated, history }) => {
           value={state.password}
           onChange={handleChange}
         />
-        <CustomButton>SIGN ME UP</CustomButton>
+        <button>SIGN ME UP</button>
       </form>
     </div>
   );
