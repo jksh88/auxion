@@ -1,8 +1,8 @@
 import React from 'react';
-import './propertyDetails.styles.css';
+import './propertyCard.styles.css';
 import { useHistory } from 'react-router-dom';
 
-const PropertyDetails = ({ address, photo, id }) => {
+const PropertyCard = ({ address, photo, id }) => {
   const history = useHistory();
   console.log('PHOTO ', photo);
   const handleClick = () => {
@@ -10,7 +10,7 @@ const PropertyDetails = ({ address, photo, id }) => {
   };
 
   return (
-    <div className="property-details">
+    <div className="property-card">
       <ul className="cards">
         <li className="cards_item" style={{ minWidth: '20rem' }}>
           <div className="card">
@@ -22,7 +22,7 @@ const PropertyDetails = ({ address, photo, id }) => {
               <div className="card_content">
                 <h2 className="address">{address}</h2>
                 <p className="card_text">
-                  Click the button to see details and place your bid
+                  Click the button to see auction status and place your bid
                 </p>
                 <button className="btn" onClick={handleClick}>
                   Details
@@ -36,4 +36,4 @@ const PropertyDetails = ({ address, photo, id }) => {
   );
 };
 
-export default PropertyDetails;
+export default PropertyCard;

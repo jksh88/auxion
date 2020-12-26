@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import PropertyDetails from './propertyDetails.component';
+import PropertyCard from './propertyCard.component';
 import './propertyList.styles.css';
 
 const PropertyList = () => {
@@ -19,7 +19,7 @@ const PropertyList = () => {
   return (
     <div className="property-list">
       {properties.map(({ _id, ...otherProps }) => (
-        <PropertyDetails key={_id} {...otherProps} id={_id} />
+        <PropertyCard key={_id} {...otherProps} id={_id} />
       ))}
     </div>
   );

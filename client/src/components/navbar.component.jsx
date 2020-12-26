@@ -20,6 +20,11 @@ const Navbar = () => {
           <h1 className="logo">LOGO</h1>
         </Link>
       </div>
+      <div className="nav-center">
+        <Link to="/listproperty">
+          <button className="list-button">LIST MY PROPERTY</button>
+        </Link>
+      </div>
       <div
         className="nav-right"
         style={{

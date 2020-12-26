@@ -3,6 +3,8 @@ const PropertyModel = require('../models/propertyModel');
 const router = new express.Router();
 const auth = require('../middlewares/auth');
 const UserModel = require('../models/userModel');
+const AuctionModel = require('../models/auctionModel');
+
 // const multer = require('multer');
 
 router.post('/listproperty', auth, async (req, res) => {
@@ -27,6 +29,18 @@ router.get('/properties', async (req, res) => {
   const properties = await PropertyModel.find({});
   try {
     res.status(200).send(properties);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+});
+
+router.get('/property/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const auctionProperty = await PropertyModel.findById(id); //Q: How to query an auction by property Id of its propert
+    console.log(auctionProperty.address);
+    res.status(200).send(auctionProperty);
   } catch (err) {
     console.log(err);
     res.status(500).send(err);
