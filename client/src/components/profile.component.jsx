@@ -1,8 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-// import apiSvc from '../utils/apiSvc';
-import axiosSvc from '../utils/axiosSvc';
 import { Link } from 'react-router-dom';
+const { REACT_APP_SERVER_URL } = process.env;
 
 const initialState = { name: '' };
 
@@ -15,10 +14,20 @@ const Profile = (props) => {
     const accessToken = localStorage.getItem('accessToken');
     console.log('ACCESS TKN', accessToken);
     const getProfile = async (accessToken) => {
-      //   const userInfo = await apiSvc.profile(accessToken);
-      const userInfo = await axiosSvc.profile(accessToken);
+      const userInfo = await fetch(`${REACT_APP_SERVER_URL}/me`, {
+        method: 'GET',
+        credentials: 'include',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+        .then((res) => res.json())
+        .catch((err) => console.log(err));
+
       console.log(
-        'USERINFO at Proifle Component after making axiosSvc.profile request call:',
+        'USERINFO at Proifle Component after making get request call:',
         userInfo
       );
 

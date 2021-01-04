@@ -22,7 +22,6 @@ const Register = (props) => {
     const { name, email, password } = state;
     const user = { name, email, password }; //ES6 syntax
     console.log('USER FROM INPUT FORM IS..', user);
-    // const res = await apiSvc.register(user);
 
     // const res = await axios.post(`${REACT_APP_SERVER_URL}/register`, user);
     const res = await fetch(`${REACT_APP_SERVER_URL}/register`, {
