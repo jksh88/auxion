@@ -75,14 +75,28 @@ router.put('/properties/:id/bid', auth, async (req, res) => {
   //in order to create a bid, i need user id, and amount(per above two lines here)
   //i need to find the auction by property id, update push(user router?) bids into bid array
   const id = req.params.id;
-  const bidder = req.user.id
+  const bidder = req.user.id;
+  const { amount } = req.body;
+  const bid = {
+    bidder,
+    amount,
+  };
   try {
-    const updatedBidProperty = await PropertyModel.findByIdAndUpdate(id, {
-      auction: {
-        bidder: 
-        currentHighestBid: ()
-      
-      }});
+    const auction = await AuctionModel.findOne({ propertyOnSale: id });
+    if (auction.currentHighestBid >= amount) {
+      res
+        .status(400)
+        .send({ message: 'Amount is less than the current highest bid' });
+      return;
+    }
+    auction.currentHighestBid = amount;
+    auction.bids.push(bid);
+    await auction.save();
+
+    res.status(200).send(auction);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
   }
 });
 
