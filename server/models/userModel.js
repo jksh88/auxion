@@ -18,34 +18,23 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    trim: true,
-    validate(value) {
-      if (value.length < 7) {
-        throw new Error('pw needs to be at least 8 characters');
-      }
-    },
+    select: false,
   },
   properties: [
+    //properties the owner has if the user is an owner
     {
       ref: 'PropertyModel',
       type: Schema.Types.ObjectId,
     },
   ],
+  auctions: [
+    //auctions the buyer is participating in if the user is a buyer
+    {
+      ref: 'AuctionModel',
+      type: Schema.Types.ObjectId,
+    },
+  ],
 });
-
-// userSchema.virtual('properties', {
-//   ref: 'PropertyModel',
-//   localField: '_id',
-//   foreignField: 'owner',
-// });
-// userSchema.pre('save', async function (next) {
-//   const user = this;
-//   console.log(this);
-//   user.password = await bcrypt.hash(user.password, 10);
-
-//   console.log('just before saving');
-//   next();
-// });
 
 const UserModel = mongoose.model('UserModel', userSchema);
 
