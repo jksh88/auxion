@@ -27,7 +27,6 @@ router.post('/register', async (req, res) => {
 });
 
 router.get('/me', auth, async (req, res) => {
-  //me router is only for authorization. I need a separate profile router as well
   try {
     await req.user.populate('properties').execPopulate();
     await req.user.populate('auctions').execPopulate();

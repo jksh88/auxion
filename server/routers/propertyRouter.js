@@ -27,6 +27,7 @@ router.post('/listproperty', auth, async (req, res) => {
     currentHighestBid: startPrice,
     auctionEndTime,
     propertyOnSale: property.id,
+    owner: req.user.id,
   });
   property.auction = auction.id;
   console.log('REQUEST from FE NEW: ', JSON.parse(JSON.stringify(req.body)));
@@ -76,23 +77,38 @@ router.put('/properties/:id/bid', auth, async (req, res) => {
   //i need to find the auction by property id, update push(user router?) bids into bid array
   const id = req.params.id;
   const bidder = req.user.id;
-  const { amount } = req.body;
+  const { purchasePrice, deposit, dueDiligence, closingDate } = req.body;
   const bid = {
     bidder,
-    amount,
+    purchasePrice,
+    deposit,
+    dueDiligence,
+    closingDate,
   };
   try {
     const auction = await AuctionModel.findOne({ propertyOnSale: id });
-    if (auction.currentHighestBid >= amount) {
-      res
-        .status(400)
-        .send({ message: 'Amount is less than the current highest bid' });
+    if (auction.owner.toString() === bidder.toString()) {
+      //ObjectId is an object and I need to stringify it to compare equality (In JS, obj === obj is false)
+      res.status(400).send({
+        message: 'Federal law prohibits self-bidding on own property',
+      });
       return;
     }
-    auction.currentHighestBid = amount;
+    if (auction.startPrice >= purchasePrice) {
+      res.status(400).send({
+        message: "Your offer amount is less than seller's starting price",
+      });
+      return;
+    }
+    auction.currentHighestBid =
+      auction.currentHighestBid < purchasePrice
+        ? purchasePrice
+        : auction.currentHighestBid;
     auction.bids.push(bid);
     await auction.save();
-
+    // console.log('AUCTION: ', auction);
+    req.user.auctions.push(auction.id);
+    await req.user.save();
     res.status(200).send(auction);
   } catch (err) {
     console.log(err);

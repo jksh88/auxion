@@ -3,12 +3,14 @@ const { Schema } = mongoose;
 
 const bidSchema = new Schema({
   bidder: {
-    //current highest bidder
     type: Schema.Types.ObjectId,
     required: true,
     ref: 'UserModel',
   },
-  amount: { type: Number, required: true },
+  purchasePrice: { type: Number, required: true },
+  deposit: { type: Number, required: true },
+  dueDiligence: { type: Number, required: true },
+  closingDate: { type: Date, required: true },
   createdAt: { type: Date, default: new Date().toISOString() },
 });
 
@@ -23,7 +25,11 @@ const auctionSchema = new Schema({
   auctionEndTime: { type: Date },
   propertyOnSale: {
     type: Schema.Types.ObjectId,
-    required: true, //IGOR: To prevent circular reference, do NOT add `ref: 'PropertyModel;'` here. It will fail.
+    required: true, //To prevent circular reference, do NOT add `ref: 'PropertyModel;'` here. It will fail.
+  },
+  owner: {
+    type: Schema.Types.ObjectId,
+    required: true,
   },
 });
 
