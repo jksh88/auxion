@@ -41,10 +41,12 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   console.log('TEST: ', email);
   try {
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne({ email }).select('password');
+
     if (!user) {
       throw new Error('Login failed');
     }
+    console.log('USER: ', user);
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       throw new Error('Login failed');
@@ -53,7 +55,8 @@ router.post('/login', async (req, res) => {
       res.send({ token });
     }
   } catch (err) {
-    res.status(400).send();
+    console.log(err);
+    res.status(400).send(err);
   }
 });
 

@@ -18,7 +18,7 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    select: false,
+    select: false, //this prevents database from giving out password by default. To overrule this restriction, I need to use 'select('password')'.
   },
   properties: [
     //properties the owner has if the user is an owner

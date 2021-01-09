@@ -107,13 +107,68 @@ router.put('/properties/:id/bid', auth, async (req, res) => {
     auction.bids.push(bid);
     await auction.save();
     // console.log('AUCTION: ', auction);
-    req.user.auctions.push(auction.id);
+    if (!req.user.auctions.includes(auction.id)) {
+      req.user.auctions.push(auction.id);
+    }
     await req.user.save();
-    res.status(200).send(auction);
+    // const auctionInfoWithBuyerBid = {
+    //   ...auction,
+    //   bids: bids.filter((bid) => bid.bidder.toString() === req.user.id),
+    // };
+    res.status(200).send({
+      ...auction.toObject(),
+      bids: auction.bids.filter(
+        (bid) => bid.bidder.toString() === bidder.toString()
+      ),
+    });
   } catch (err) {
     console.log(err);
     res.status(500).send(err);
   }
+});
+
+router.get('/properties/:id/bids', auth, async (req, res) => {
+  const id = req.params.id;
+  const auction = await AuctionModel.findOne({ propertyOnSale: id });
+  if (auction.owner.toString() === req.user.id.toString()) {
+    const bidsPerBidder = new Map();
+    //id's are objects and each respective value for that id is the last bid of a particular bidder
+    //In real life, a particular bidder's latest bid replaces and cancels his any previous bid(s)
+    auction.bids.forEach((bid) => {
+      bidsPerBidder.set(bid.bidder.toString(), bid); //The Map works just like an object. Becasue object.id !=== another object.id (by reference), map treated objects with with the same id as different keys. Therefore, the original logic to rewrite the value didn't work.
+    });
+    res
+      .status(200)
+      .send({ ...auction.toObject(), bids: [...bidsPerBidder.values()] });
+  }
+});
+
+router.patch('/properties/:id', auth, async (req, res) => {
+  const { description, available, images } = req.body;
+  const id = req.params.id;
+  if (!req.user.properties.some((property) => property.id.toString() === id)) {
+    res.status(401).send('Unauthorized');
+    return;
+  }
+  if (!(description || available != null || images)) {
+    res.status(400).send('Some fields missing');
+    return;
+  }
+  const fieldsToUpdate = {};
+  if (description != null) {
+    fieldsToUpdate.description = description;
+  }
+  if (available != null) {
+    fieldsToUpdate.available = available;
+  }
+  if (images != null) {
+    fieldsToUpdate.images = images;
+  }
+
+  const property = await PropertyModel.findByIdAndUpdate(id, fieldsToUpdate, {
+    new: true,
+  });
+  res.status(200).send(property);
 });
 
 module.exports = router;
