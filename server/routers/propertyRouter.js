@@ -16,21 +16,21 @@ router.post('/listproperty', auth, async (req, res) => {
     auctionEndTime,
   } = req.body;
   const property = new PropertyModel({
-    address,
-    description,
+    address: JSON.parse(address),
+    description: JSON.parse(description),
     images: [imageURL],
     owner: req.user.id,
   });
 
   const auction = new AuctionModel({
-    startPrice,
-    currentHighestBid: startPrice,
+    startPrice: parseInt(JSON.parse(startPrice)),
+    currentHighestBid: parseInt(JSON.parse(startPrice)),
     auctionEndTime,
     propertyOnSale: property.id,
     owner: req.user.id,
   });
   property.auction = auction.id;
-  console.log('REQUEST from FE NEW: ', JSON.parse(JSON.stringify(req.body)));
+  console.log('REQUEST from FE NEW: ', req.body);
   try {
     await property.save();
     await auction.save();

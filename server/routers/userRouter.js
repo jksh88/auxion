@@ -10,8 +10,10 @@ router.post('/register', async (req, res) => {
   console.log('EMAIL FOR REGSITER IS...', req.body.email);
   const { name, email, password } = req.body;
   const user = await UserModel.findOne({ email });
+  console.log('USER on BE ', user);
   if (user) {
     res.status(409).send('User alread exists');
+    return;
   }
   try {
     const hashedPW = await bcrypt.hash(password, 10);

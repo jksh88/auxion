@@ -13,6 +13,7 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
+    req.body.imageURL = `http://localhost:8000/images/${file.originalname}`;
   },
 });
 

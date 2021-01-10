@@ -3,15 +3,32 @@ import axios from 'axios';
 
 const { REACT_APP_SERVER_URL } = process.env;
 
+const initialAddress = {
+  street: '',
+  city: '',
+  state: '',
+  zip: '',
+};
 const ListProperty = (props) => {
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState(initialAddress);
+  const [description, setDescription] = useState('');
+  const [startPrice, setStartPrice] = useState('0');
+  const [auctionEndTime, setAuctionEndTime] = useState(
+    new Date().toJSON().slice(0, 10)
+  );
   const [file, setFile] = useState(null);
-  // const [filename, setFilename] = useState('Choose File');
-  // const { address, selectedPhoto } = propertyInfo;
-  // const formData = new FormData();
 
   const handleAddressChange = (evt) => {
-    setAddress(evt.target.value);
+    setAddress({ ...address, [evt.target.name]: evt.target.value });
+  };
+  const handleDescriptionChange = (evt) => {
+    setDescription(evt.target.value);
+  };
+  const handleStartPriceChange = (evt) => {
+    setStartPrice(evt.target.value);
+  };
+  const handleAuctionEndTimeChange = (evt) => {
+    setAuctionEndTime(evt.target.value);
   };
 
   const handlePhotoSelect = (evt) => {
@@ -22,12 +39,18 @@ const ListProperty = (props) => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     const formData = new FormData();
-    formData.append('address', address);
+    formData.append('address', JSON.stringify(address));
+    formData.append('description', JSON.stringify(description));
+    formData.append('startPrice', JSON.stringify(startPrice));
+    formData.append('auctionEndTime', JSON.stringify(auctionEndTime));
     formData.append('file', file, file.name);
     console.log([...formData.entries()]);
     try {
       axios.post(`${REACT_APP_SERVER_URL}/listproperty`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: localStorage.getItem('accessToken'),
+        },
       });
     } catch (err) {
       console.log(err);
@@ -46,10 +69,60 @@ const ListProperty = (props) => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          value={address}
+          value={address.street}
           onChange={handleAddressChange}
-          name={address}
-          placeholder="Enter address"
+          name="street"
+          placeholder="Enter street"
+          required
+        />
+        <input
+          type="text"
+          value={address.city}
+          onChange={handleAddressChange}
+          name="city"
+          placeholder="Enter city"
+          required
+        />
+        <input
+          type="text"
+          value={address.state}
+          onChange={handleAddressChange}
+          name="state"
+          placeholder="Enter state"
+          required
+        />
+        <input
+          type="text"
+          value={address.zip}
+          onChange={handleAddressChange}
+          name="zip"
+          placeholder="Enter zip"
+          required
+        />
+        <textarea
+          value={description}
+          onChange={handleDescriptionChange}
+          name="description"
+          placeholder="Enter description"
+          resize="vertical"
+          required
+        />
+        <input
+          type="number"
+          value={startPrice}
+          onChange={handleStartPriceChange}
+          name="startPrice"
+          placeholder="Enter start price for the auction"
+          min="0" //validation added to prevent inputting negative number
+          required
+        />
+        <input
+          type="date"
+          value={auctionEndTime}
+          onChange={handleAuctionEndTimeChange}
+          name="auctionEndTime"
+          min={new Date().toJSON().slice(0, 10)}
+          required
         />
         <br />
         <input type="file" onChange={handlePhotoSelect} />

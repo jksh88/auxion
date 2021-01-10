@@ -2,9 +2,9 @@ import React from 'react';
 import './propertyCard.styles.css';
 import { useHistory } from 'react-router-dom';
 
-const PropertyCard = ({ address, photo, id }) => {
+const PropertyCard = ({ address, images, id }) => {
   const history = useHistory();
-  console.log('PHOTO ', photo);
+  console.log('PHOTO ', images);
   const handleClick = () => {
     history.push(`/login?from=${id}`);
   };
@@ -15,12 +15,9 @@ const PropertyCard = ({ address, photo, id }) => {
         <li className="cards_item" style={{ minWidth: '20rem' }}>
           <div className="card">
             <div className="card_image">
-              <img
-                src={`http://localhost:8000/images/${photo}`}
-                alt="property photo"
-              />
+              <img src={images[0]} alt="property images" />
               <div className="card_content">
-                <h2 className="address">{address}</h2>
+                <h2 className="address">{address.street}</h2>
                 <p className="card_text">
                   Click the button to see auction status and place your bid
                 </p>
