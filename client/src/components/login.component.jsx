@@ -1,64 +1,120 @@
 import React, { useState } from 'react';
-import auth from '../utils/auth';
-import apiSvc from '../utils/apiSvc';
-import axiosSvc from '../utils/axiosSvc';
+import { withRouter, useParams } from 'react-router-dom';
 
-import CustomButton from './custom-button.component.jsx';
-import axios from 'axios';
+const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-const initialState = { email: '', password: '' };
+const initialState = {
+  email: '',
+  password: '',
+};
 
 const Login = (props) => {
   const [state, setState] = useState(initialState);
+  const [buttonEnabled, setButtonEnabled] = useState(false);
+  // const router = useRouter();
+  // const { from } = useParams();
+  const { history } = props;
+  // console.log('FROMMMM ', from);
+
+  const id = new URLSearchParams(history.location.search).get('from');
+
+  const { email, password } = state;
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
-    setState((curState) => ({ ...curState, [name]: value }));
+    setState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+    // console.log(email);
+
+    setButtonEnabled(email && password && Boolean(value));
   };
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    const { email, password } = state;
-    const user = { email, password };
-    console.log('email at front-end is.... ', email);
-    const res = await axiosSvc.login(user);
+    setButtonEnabled(false);
 
-    // const res = await axios.post('http://localhost:3000/login', user);
-    console.log('RES is.... ', res);
-    // console.log(res.error);
+    console.log(state);
+    const res = await fetch(`${REACT_APP_SERVER_URL}/login`, {
+      method: 'POST',
+      // credentials: 'include',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(state),
+    });
+    console.log('RESPONSE ***** ', res);
+    if (res.ok) {
+      const user = await res.json();
+      console.log('USER >>>>>', user);
+      const { token } = user;
+      localStorage.setItem('accessToken', token);
+      localStorage.setItem('User', JSON.stringify(user));
+      //push the whole user into localStorage
 
-    if (res.error) {
-      alert(`${res.message}`);
-      setState(initialState);
+      setState({ email: '', password: '' });
+      history && history.push(id ? `property/${id}` : '/');
     } else {
-      const token = res;
-      console.log('TOKEN IS... :', token);
-      window.localStorage.setItem('accessToken', token);
-
-      props.setIsAuthenticated(true);
-      auth.login(() => props.history.push('/profile'));
+      alert('Login failed');
+      // throw new Error();
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="email"
-        placeholder="Your email"
-        value={state.email}
-        onChange={handleChange}
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Your password"
-        value={state.password}
-        onChange={handleChange}
-      />
-      <CustomButton>SIGN ME IN</CustomButton>
+    <form
+      className="sign-in"
+      onSubmit={handleSubmit}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '30vw',
+        margin: '0 auto',
+        marginTop: '8vw',
+        justifyContent: 'space-around',
+        height: '35vw',
+        border: '1px solid grey',
+        borderRadius: '1rem',
+        padding: '3rem',
+      }}
+    >
+      <div className="field" style={{ width: '100%' }}>
+        <label>email</label>
+        <input
+          name="email"
+          type="email"
+          value={state.email}
+          onChange={handleChange}
+          required
+          style={{
+            width: '100%',
+            letterSpacing: '.2rem',
+            height: '2rem',
+            border: 'none',
+            borderBottom: '1px solid grey',
+          }}
+        />
+      </div>
+      <div className="field">
+        <label>password</label>
+        <input
+          name="password"
+          type="password"
+          value={state.password}
+          onChange={handleChange}
+          required
+          style={{
+            width: '100%',
+            letterSpacing: '.3rem',
+            height: '2rem',
+            border: 'none',
+            borderBottom: '1px solid grey',
+          }}
+        />
+      </div>
+      {/* <button disabled={!buttonEnabled}>Sign in</button> */}
+      <button>Log in</button>
     </form>
   );
 };
 
-export default Login;
+export default withRouter(Login);

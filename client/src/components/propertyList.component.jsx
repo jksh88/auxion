@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import PropertyDetails from './propertyDetails.component';
+import PropertyCard from './propertyCard.component';
 import './propertyList.styles.css';
 
 const PropertyList = () => {
   const [properties, setProperties] = useState([]);
   useEffect(() => {
     return axios
-      .get('http://localhost:3000/properties')
+      .get('http://localhost:8000/properties')
       .then((res) => {
-        console.log(res.data);
+        console.log('RESPONSE DATA: ', res.data);
+
         setProperties(res.data);
       })
       .catch((err) => console.log(err));
@@ -18,7 +19,7 @@ const PropertyList = () => {
   return (
     <div className="property-list">
       {properties.map(({ _id, ...otherProps }) => (
-        <PropertyDetails key={_id} {...otherProps} />
+        <PropertyCard key={_id} {...otherProps} id={_id} />
       ))}
     </div>
   );

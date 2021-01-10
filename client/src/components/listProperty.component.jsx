@@ -1,0 +1,63 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+
+const { REACT_APP_SERVER_URL } = process.env;
+
+const ListProperty = (props) => {
+  const [address, setAddress] = useState('');
+  const [file, setFile] = useState(null);
+  // const [filename, setFilename] = useState('Choose File');
+  // const { address, selectedPhoto } = propertyInfo;
+  // const formData = new FormData();
+
+  const handleAddressChange = (evt) => {
+    setAddress(evt.target.value);
+  };
+
+  const handlePhotoSelect = (evt) => {
+    setFile(evt.target.files[0]);
+    // setFilename(evt.target.files[0].name);
+  };
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    const formData = new FormData();
+    formData.append('address', address);
+    formData.append('file', file, file.name);
+    console.log([...formData.entries()]);
+    try {
+      axios.post(`${REACT_APP_SERVER_URL}/listproperty`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  //   fetch(`http://localhost:8000/listproperty'`, {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'multipart/form-data' },
+  //     body: formData,
+  //   });
+  // };
+  return (
+    <div>
+      <h2>Property Listing Form</h2>
+      <span>Provide property address and Photo</span>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={address}
+          onChange={handleAddressChange}
+          name={address}
+          placeholder="Enter address"
+        />
+        <br />
+        <input type="file" onChange={handlePhotoSelect} />
+        {/* <input type="submit" value="click"></input> */}
+        <button>List My Property!</button>
+      </form>
+    </div>
+  );
+};
+
+export default ListProperty;
