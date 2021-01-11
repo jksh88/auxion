@@ -18,6 +18,8 @@ const ListProperty = (props) => {
   );
   const [file, setFile] = useState(null);
 
+  const { history } = props;
+
   const handleAddressChange = (evt) => {
     setAddress({ ...address, [evt.target.name]: evt.target.value });
   };
@@ -67,66 +69,97 @@ const ListProperty = (props) => {
       <h2>Property Listing Form</h2>
       <span>Provide property address and Photo</span>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={address.street}
-          onChange={handleAddressChange}
-          name="street"
-          placeholder="Enter street"
-          required
-        />
-        <input
-          type="text"
-          value={address.city}
-          onChange={handleAddressChange}
-          name="city"
-          placeholder="Enter city"
-          required
-        />
-        <input
-          type="text"
-          value={address.state}
-          onChange={handleAddressChange}
-          name="state"
-          placeholder="Enter state"
-          required
-        />
-        <input
-          type="text"
-          value={address.zip}
-          onChange={handleAddressChange}
-          name="zip"
-          placeholder="Enter zip"
-          required
-        />
-        <textarea
-          value={description}
-          onChange={handleDescriptionChange}
-          name="description"
-          placeholder="Enter description"
-          resize="vertical"
-          required
-        />
-        <input
-          type="number"
-          value={startPrice}
-          onChange={handleStartPriceChange}
-          name="startPrice"
-          placeholder="Enter start price for the auction"
-          min="0" //validation added to prevent inputting negative number
-          required
-        />
-        <input
-          type="date"
-          value={auctionEndTime}
-          onChange={handleAuctionEndTimeChange}
-          name="auctionEndTime"
-          min={new Date().toJSON().slice(0, 10)}
-          required
-        />
+        <div>
+          <label for="street">Street </label>
+          <input
+            type="text"
+            value={address.street}
+            onChange={handleAddressChange}
+            name="street"
+            id="street"
+            placeholder="Enter street"
+            required
+          />
+        </div>
+        <div>
+          <label for="city">City </label>
+          <input
+            type="text"
+            value={address.city}
+            onChange={handleAddressChange}
+            name="city"
+            us="city"
+            placeholder="Enter city"
+            required
+          />
+        </div>
+        <div>
+          <label for="state">State </label>
+          <input
+            type="text"
+            value={address.state}
+            onChange={handleAddressChange}
+            name="state"
+            id="state"
+            placeholder="Enter state"
+            required
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            value={address.zip}
+            onChange={handleAddressChange}
+            name="zip"
+            id="zip"
+            placeholder="Enter zip"
+            required
+          />
+        </div>
+        <div>
+          <label for="zip">Zip </label>
+          <label for="description">Description </label>
+        </div>
+        <div>
+          <textarea
+            value={description}
+            onChange={handleDescriptionChange}
+            name="description"
+            id="description"
+            placeholder="Enter description"
+            resize="vertical"
+            required
+          />
+        </div>
+        <div>
+          <label for="startPrice">Start Price </label>
+          <input
+            type="number"
+            value={startPrice}
+            onChange={handleStartPriceChange}
+            name="startPrice"
+            id="startPrice"
+            placeholder="Enter start price for the auction"
+            min="0" //validation added to prevent inputting negative number
+            required
+          />
+        </div>
+        <div>
+          <label for="auctionEndTime">Auction End Time </label>
+          <input
+            type="date"
+            value={auctionEndTime}
+            onChange={handleAuctionEndTimeChange}
+            name="auctionEndTime"
+            id="auctionEndTime"
+            min={new Date().toJSON().slice(0, 10)}
+            required
+          />
+        </div>
         <br />
         <input type="file" onChange={handlePhotoSelect} />
         {/* <input type="submit" value="click"></input> */}
+        <br />
         <button>List My Property!</button>
       </form>
     </div>
