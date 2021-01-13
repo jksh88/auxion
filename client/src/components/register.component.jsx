@@ -40,8 +40,9 @@ const Register = (props) => {
       alert(message);
     } else {
       const parsedUser = await res.json();
-      const { token } = parsedUser;
+      const { token, _id } = parsedUser;
       localStorage.setItem('accessToken', token);
+      localStorage.setItem('userId', _id);
       history.push('/');
     }
   };

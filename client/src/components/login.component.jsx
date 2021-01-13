@@ -47,9 +47,9 @@ const Login = (props) => {
     if (res.ok) {
       const user = await res.json();
       console.log('USER >>>>>', user);
-      const { token } = user;
+      const { token, _id } = user;
       localStorage.setItem('accessToken', token);
-      localStorage.setItem('User', JSON.stringify(user));
+      localStorage.setItem('userId', _id);
       //push the whole user into localStorage
 
       setState({ email: '', password: '' });

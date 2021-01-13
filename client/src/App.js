@@ -28,7 +28,7 @@ function App() {
           <Route exact path="/" component={Landing} />
           <Route exact path="/me" component={Profile} />
           <Route exact path="/listproperty" component={ListProperty} />
-          <Route exact path="/property/:id" component={AuctionPage} />
+          <Route exact path="/properties/:id" component={AuctionPage} />
         </Switch>
       </BrowserRouter>
     </div>

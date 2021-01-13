@@ -1,19 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 const { REACT_APP_SERVER_URL } = process.env;
 
 const AuctionPage = () => {
   const { id } = useParams();
-  useEffect(() => {
+  const [property, setProperty] = useState(null);
+  const isOwner =
+    property && localStorage.getItem('userId') === property.owner._id;
+  useEffect(async () => {
     axios
-      .get(`${REACT_APP_SERVER_URL}/property/${id}`)
-      .then((res) => console.log(res))
+      .get(`${REACT_APP_SERVER_URL}/properties/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem('accessToken'),
+        },
+      })
+      .then((res) => {
+        setProperty(res.data);
+        console.log('DATA: ', res.data);
+      })
       .catch((err) => console.log(err));
-  });
+  }, []);
   return (
     <div>
-      <h1>{`This is auction page for address ${id}`}</h1>
+      {property && (
+        <>
+          {' '}
+          <h1>{`Auction page for address ${property.address.street}`}</h1>
+          <p>{isOwner ? 'Owner' : 'Buyer'}</p>
+        </>
+      )}
     </div>
   );
 };

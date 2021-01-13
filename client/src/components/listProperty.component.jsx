@@ -38,7 +38,7 @@ const ListProperty = (props) => {
     // setFilename(evt.target.files[0].name);
   };
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = async (evt) => {
     evt.preventDefault();
     const formData = new FormData();
     formData.append('address', JSON.stringify(address));
@@ -48,12 +48,22 @@ const ListProperty = (props) => {
     formData.append('file', file, file.name);
     console.log([...formData.entries()]);
     try {
-      axios.post(`${REACT_APP_SERVER_URL}/listproperty`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: localStorage.getItem('accessToken'),
-        },
-      });
+      const response = await axios.post(
+        `${REACT_APP_SERVER_URL}/listproperty`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: localStorage.getItem('accessToken'),
+          },
+        }
+      );
+      console.log('RESPONSE FOR LISTPROPERTY: ', response);
+      const { _id } = response.data;
+
+      console.log('_ID HERE: ', _id);
+      // console.log('HISTORY HERE: ', history);
+      history.push(`properties/${_id}`);
     } catch (err) {
       console.log(err);
     }
@@ -70,7 +80,7 @@ const ListProperty = (props) => {
       <span>Provide property address and Photo</span>
       <form onSubmit={handleSubmit}>
         <div>
-          <label for="street">Street </label>
+          <label htmlFor="street">Street </label>
           <input
             type="text"
             value={address.street}
@@ -82,7 +92,7 @@ const ListProperty = (props) => {
           />
         </div>
         <div>
-          <label for="city">City </label>
+          <label htmlFor="city">City </label>
           <input
             type="text"
             value={address.city}
@@ -94,7 +104,7 @@ const ListProperty = (props) => {
           />
         </div>
         <div>
-          <label for="state">State </label>
+          <label htmlFor="state">State </label>
           <input
             type="text"
             value={address.state}
@@ -117,8 +127,8 @@ const ListProperty = (props) => {
           />
         </div>
         <div>
-          <label for="zip">Zip </label>
-          <label for="description">Description </label>
+          <label htmlFor="zip">Zip </label>
+          <label htmlFor="description">Description </label>
         </div>
         <div>
           <textarea
@@ -132,7 +142,7 @@ const ListProperty = (props) => {
           />
         </div>
         <div>
-          <label for="startPrice">Start Price </label>
+          <label htmlFor="startPrice">Start Price </label>
           <input
             type="number"
             value={startPrice}
@@ -145,7 +155,7 @@ const ListProperty = (props) => {
           />
         </div>
         <div>
-          <label for="auctionEndTime">Auction End Time </label>
+          <label htmlFor="auctionEndTime">Auction End Time </label>
           <input
             type="date"
             value={auctionEndTime}

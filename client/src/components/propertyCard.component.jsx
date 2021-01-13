@@ -6,7 +6,10 @@ const PropertyCard = ({ address, images, id }) => {
   const history = useHistory();
   console.log('PHOTO ', images);
   const handleClick = () => {
-    history.push(`/login?from=${id}`);
+    const path = localStorage.getItem('accessToken')
+      ? `/properties/${id}`
+      : `/login?from=${id}`;
+    history.push(path);
   };
 
   return (
