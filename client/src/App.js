@@ -28,7 +28,12 @@ function App() {
           <Route exact path="/" component={Landing} />
           <Route exact path="/me" component={Profile} />
           <Route exact path="/listproperty" component={ListProperty} />
-          <Route exact path="/properties/:id" component={AuctionPage} />
+          <Route
+            exact
+            path="/properties/:id"
+            // render={(props) => <AuctionPage {...props} />}
+            component={AuctionPage}
+          />
           {/* <Route exact path="/properties/:id/bids" component={BidsPage} /> */}
         </Switch>
       </BrowserRouter>
