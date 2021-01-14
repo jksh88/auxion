@@ -58,12 +58,22 @@ router.get('/properties/:id', auth, async (req, res) => {
   const id = req.params.id; //id of the property
   try {
     const auctionProperty = await PropertyModel.findById(id); //Q: How to query an auction by property Id of its propert
-    await auctionProperty
-      .populate({ path: 'owner', select: '-auctions -email' }) //No need to send auctions information or email of the owner
-      .execPopulate();
+    // await auctionProperty
+    //   .populate({ path: 'owner', select: '-auctions -email' }) //No need to send auctions information or email of the owner
+    //   .execPopulate();
     await auctionProperty.populate('auction').execPopulate();
     // console.log(auctionProperty.address);
-    res.status(200).send(auctionProperty);
+    const propertyObject = auctionProperty.toObject(); //auctionProperty is a mongodb document. so, it needs to be changed into an object by 'toObject()' to be able to be used in JS enviornment and elements can be deconstructed therefrom
+
+    res.status(200).send({
+      ...propertyObject,
+      auction: {
+        ...propertyObject.auction,
+        bids: propertyObject.auction.bids.filter(
+          (bid) => bid.bidder.toString() === req.user.id.toString()
+        ),
+      },
+    });
   } catch (err) {
     console.log(err);
     res.status(500).send(err);

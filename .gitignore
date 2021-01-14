@@ -1,2 +1,7 @@
 node_modules
 server/public
+
+
+#or I can do '**/public'(any folder that is suffixed with "/public"'
+#if I do 'public/images', even if the '/' is in the middle in this case, for some crazy reason, git assumes that this public folder is right under the root(crazy I know)
+#if I don't use anything in the front OR if I use '/', then it assumes it is immediately prefixed by the root(auction folder)

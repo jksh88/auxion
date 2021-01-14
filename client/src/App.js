@@ -29,6 +29,7 @@ function App() {
           <Route exact path="/me" component={Profile} />
           <Route exact path="/listproperty" component={ListProperty} />
           <Route exact path="/properties/:id" component={AuctionPage} />
+          {/* <Route exact path="/properties/:id/bids" component={BidsPage} /> */}
         </Switch>
       </BrowserRouter>
     </div>

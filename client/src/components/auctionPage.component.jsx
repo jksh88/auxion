@@ -27,7 +27,7 @@ const AuctionPage = () => {
         <>
           {' '}
           <h1>{`Auction page for address ${property.address.street}`}</h1>
-          <p>{isOwner ? 'Owner' : 'Buyer'}</p>
+          <p>{isOwner ? 'Owner Interface' : 'Buyer Interface'}</p>
         </>
       )}
     </div>
