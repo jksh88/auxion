@@ -8,20 +8,16 @@ const AuctionModel = require('../models/auctionModel');
 // const multer = require('multer');
 
 router.post('/listproperty', auth, async (req, res) => {
-  const {
-    address,
-    description,
-    imageURL,
-    startPrice,
-    auctionEndTime,
-  } = req.body;
+  const { address, description, startPrice, auctionEndTime } = req.body;
   const property = new PropertyModel({
     address: JSON.parse(address),
     description: JSON.parse(description),
-    images: [imageURL],
+    images: req.files.map(
+      (file) => `http://localhost:8000/images/${file.filename}`
+    ), //req.files is an array of objects. We need array of strings with strings being the names of the files
     owner: req.user.id,
   });
-
+  // console.log('REQ.FILES: ', req.files);
   const auction = new AuctionModel({
     startPrice: parseInt(JSON.parse(startPrice)),
     currentHighestBid: parseInt(JSON.parse(startPrice)),

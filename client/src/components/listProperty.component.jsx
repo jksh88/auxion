@@ -16,7 +16,7 @@ const ListProperty = (props) => {
   const [auctionEndTime, setAuctionEndTime] = useState(
     new Date().toJSON().slice(0, 10)
   );
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState([]);
 
   const { history } = props;
 
@@ -34,7 +34,8 @@ const ListProperty = (props) => {
   };
 
   const handlePhotoSelect = (evt) => {
-    setFile(evt.target.files[0]);
+    setFiles(Array.from(evt.target.files));
+    // console.log('EVT.TGT.FILES: ', evt.target.files);
     // setFilename(evt.target.files[0].name);
   };
 
@@ -45,7 +46,10 @@ const ListProperty = (props) => {
     formData.append('description', JSON.stringify(description));
     formData.append('startPrice', JSON.stringify(startPrice));
     formData.append('auctionEndTime', JSON.stringify(auctionEndTime));
-    formData.append('file', file, file.name);
+
+    files.forEach((file) => formData.append('file[]', file, file.name));
+    //https://developer.mozilla.org/en-US/docs/Web/API/FormData/append
+    //sticking '[]' at the end for the browser to understand that it is an array (look at the examples part for the above doc. PHP convention but formData standard comes from PHP anyways. It's just like JSON is a convention of JS but used by other languages. Same thing)
     console.log([...formData.entries()]);
     try {
       const response = await axios.post(
@@ -167,7 +171,8 @@ const ListProperty = (props) => {
           />
         </div>
         <br />
-        <input type="file" onChange={handlePhotoSelect} />
+        <input type="file" multiple={true} onChange={handlePhotoSelect} />
+        {/*To enable multiple file uplaod, set multiple attribute to true(Don't do quotes. Wrap true in curly braces) */}
         {/* <input type="submit" value="click"></input> */}
         <br />
         <button>List My Property!</button>
