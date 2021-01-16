@@ -1,4 +1,5 @@
 import React from 'react';
+import './buyerAuctionInterface.styles.css';
 
 import ImageGallery from 'react-image-gallery';
 
@@ -17,10 +18,8 @@ const images = [
   },
 ];
 
-class MyGallery extends React.Component {
-  render() {
-    return <ImageGallery items={images} />;
-  }
-}
+const MyGallery = () => {
+  return <ImageGallery items={images} />;
+};
 
 export default MyGallery;

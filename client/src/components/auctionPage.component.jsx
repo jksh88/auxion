@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import MyGallery from './buyerAuctionInterface.component';
+import './auctionPage.styles.css';
 const { REACT_APP_SERVER_URL } = process.env;
 
 const AuctionPage = (props) => {
-  // const { id } = useParams();
   const { id } = props.match.params;
   const [property, setProperty] = useState(null);
-  const isOwner =
-    property && localStorage.getItem('userId') === property.owner._id;
+  const [isOwner, setIsOwner] = useState(false);
+
   useEffect(async () => {
     axios
       .get(`${REACT_APP_SERVER_URL}/properties/${id}`, {
@@ -19,20 +18,23 @@ const AuctionPage = (props) => {
       })
       .then((res) => {
         setProperty(res.data);
+        setIsOwner(localStorage.getItem('userId') === res.data.owner);
         console.log('DATA: ', res.data);
-        console.log('Auction PAGE props: ', props);
-        // console.log(pid === id); //Why not the same??
       })
       .catch((err) => console.log(err));
   }, []);
   return (
-    <div>
+    <div className="auction-page">
       {property && (
         <>
-          {' '}
-          <h1>{`Auction page for address ${property.address.street}`}</h1>
-          <p>{isOwner ? 'Owner Interface' : 'Buyer Interface'}</p>
-          {isOwner ? 'Owner Interface' : <MyGallery />}
+          <div className="property-info">
+            <h1>{`Auction page for address ${property.address.street}`}</h1>
+            <p>{isOwner ? 'Owner Interface' : 'Buyer Interface'}</p>
+            {isOwner ? 'Owner Interface' : <MyGallery />}
+          </div>
+          <div className="auction-info">
+            <h1>{property.auction.currentHighestBid}</h1>
+          </div>
         </>
       )}
     </div>
