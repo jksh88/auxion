@@ -9,6 +9,8 @@ import Landing from './components/landing.component';
 import ListProperty from './components/listProperty.component';
 import AuctionPage from './components/auctionPage.component';
 import Profile from './components/profile.component';
+import ByPropertyBids from './components/byPropertyBids.component';
+import MakeABid from './components/makeABid.component';
 
 // import Profile from '../profile.component';
 // import Logout from './components/logout.component';
@@ -34,6 +36,9 @@ function App() {
             // render={(props) => <AuctionPage {...props} />}
             component={AuctionPage}
           />
+          <Route exact path="/properties/:id/bids" component={ByPropertyBids} />
+          <Route exact path="/properties/:id/makeabid" component={MakeABid} />
+
           {/* <Route exact path="/properties/:id/bids" component={BidsPage} /> */}
         </Switch>
       </BrowserRouter>

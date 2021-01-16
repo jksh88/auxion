@@ -66,7 +66,9 @@ router.get('/properties/:id', auth, async (req, res) => {
       auction: {
         ...propertyObject.auction,
         bids: propertyObject.auction.bids.filter(
-          (bid) => bid.bidder.toString() === req.user.id.toString()
+          (bid) =>
+            bid.bidder.toString() === req.user.id.toString() ||
+            auctionProperty.owner.toString() === req.user.id.toString()
         ),
       },
     });

@@ -1,8 +1,19 @@
 import React from 'react';
-import './buyerAuctionInterface.styles.css';
+import { useHistory } from 'react-router-dom';
 
-const BuyerAuctionInterface = () => {
-  return <h1>HHI</h1>;
+const BuyerAuctionInterface = (props) => {
+  const history = useHistory();
+  console.log(history);
+  return (
+    <div>
+      <button
+        onClick={() => history.push(`${history.location.pathname}/makeabid`)}
+      >
+        Make a bid
+      </button>
+      <h1>HHI from BuyerAuctionInterface</h1>);
+    </div>
+  );
 };
 
 export default BuyerAuctionInterface;
