@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import MyGallery from './buyerAuctionInterface.component';
+import Modal from 'react-modal';
+import PropertyPictures from './propertyPictures.component';
 import './auctionPage.styles.css';
 const { REACT_APP_SERVER_URL } = process.env;
 
@@ -8,6 +9,7 @@ const AuctionPage = (props) => {
   const { id } = props.match.params;
   const [property, setProperty] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(async () => {
     axios
@@ -23,18 +25,45 @@ const AuctionPage = (props) => {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const afterOpenModal = () => {
+    // references are now sync'd and can be accessed.
+    alert('modal is open now');
+  };
+
   return (
     <div className="auction-page">
       {property && (
         <>
-          <div className="property-info">
-            <h1>{`Auction page for address ${property.address.street}`}</h1>
-            <p>{isOwner ? 'Owner Interface' : 'Buyer Interface'}</p>
-            {isOwner ? 'Owner Interface' : <MyGallery />}
-          </div>
-          <div className="auction-info">
-            <h1>{property.auction.currentHighestBid}</h1>
-          </div>
+          <section>
+            <div>{`Auction page for address ${property.address.street}`}</div>
+            <div>{`Auction page for address ${property.auction.currentHighestBid}`}</div>
+          </section>
+          <section>
+            <div className="one-picture" onClick={openModal}>
+              <img src={property.images[0]} />
+              <Modal
+                isOpen={true}
+                onAfterOpen={afterOpenModal}
+                // onRequestClose={closeModal}
+                // style={customStyles}
+                contentLabel="Example Modal"
+              >
+                <PropertyPictures pics={property.images} />
+                <button>Close Modal</button>
+              </Modal>
+            </div>
+            <div className="auction-info">
+              <div>{property.auction.currentHighestBid}</div>
+              <div className="by-user-type-interface">
+                <p>{isOwner ? 'Owner Interface' : 'Buyer Interface'}</p>
+              </div>
+            </div>
+          </section>
         </>
       )}
     </div>
