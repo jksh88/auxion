@@ -112,7 +112,20 @@ router.put('/properties/:id/bid', auth, async (req, res) => {
       auction.currentHighestBid < purchasePrice
         ? purchasePrice
         : auction.currentHighestBid;
-    auction.bids.push(bid);
+
+    const idx = auction.bids.findIndex((bid) => {
+      bid.bidder.toString() === bidder.toString();
+    });
+
+    if (idx === -1) {
+      auction.bids.push(bid);
+    } else {
+      auction.bids[idx] = bid;
+    }
+
+    //TODO: replace push with set from auction.{set:}
+    //If there is no bid currently for the user, I need to create one, but if there is one already, I need to replace it witht the new bid
+    //if (auction.bids.findIndexOf() === -1)
     await auction.save();
     // console.log('AUCTION: ', auction);
     if (!req.user.auctions.includes(auction.id)) {
@@ -139,15 +152,14 @@ router.get('/properties/:id/bids', auth, async (req, res) => {
   const id = req.params.id;
   const auction = await AuctionModel.findOne({ propertyOnSale: id });
   if (auction.owner.toString() === req.user.id.toString()) {
-    const bidsPerBidder = new Map();
+    // const bidsPerBidder = new Map();
     //id's are objects and each respective value for that id is the last bid of a particular bidder
     //In real life, a particular bidder's latest bid replaces and cancels his any previous bid(s)
-    auction.bids.forEach((bid) => {
-      bidsPerBidder.set(bid.bidder.toString(), bid); //The Map works just like an object. Becasue object.id !=== another object.id (by reference), map treated objects with with the same id as different keys. Therefore, the original logic to rewrite the value didn't work.
-    });
-    res
-      .status(200)
-      .send({ ...auction.toObject(), bids: [...bidsPerBidder.values()] });
+    // auction.bids.forEach((bid) => {
+    //   bidsPerBidder.set(bid.bidder.toString(), bid); //The Map works just like an object. Becasue object.id !=== another object.id (by reference), map treated objects with with the same id as different keys. Therefore, the original logic to rewrite the value didn't work.
+    // });
+    res.status(200).send(auction);
+    // .send({ ...auction.toObject(), bids: [...bidsPerBidder.values()] });
   }
 });
 
