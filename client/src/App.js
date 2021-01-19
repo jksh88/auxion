@@ -11,6 +11,7 @@ import AuctionPage from './components/auctionPage.component';
 import Profile from './components/profile.component';
 import ByPropertyBids from './components/byPropertyBids.component';
 import MakeABid from './components/makeABid.component';
+import Logout from './components/logout.component';
 
 // import Profile from '../profile.component';
 // import Logout from './components/logout.component';
@@ -38,6 +39,7 @@ function App() {
           />
           <Route exact path="/properties/:id/bids" component={ByPropertyBids} />
           <Route exact path="/properties/:id/makeabid" component={MakeABid} />
+          <Route exact path="/logout" component={Logout} />
 
           {/* <Route exact path="/properties/:id/bids" component={BidsPage} /> */}
         </Switch>
