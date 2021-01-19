@@ -51,9 +51,11 @@ const Login = (props) => {
       localStorage.setItem('accessToken', token);
       localStorage.setItem('userId', _id);
       //push the whole user into localStorage
-
-      setState({ email: '', password: '' });
-      history && history.push(id ? `property/${id}` : '/');
+      props.handleAuth(true); //set isAuthenticated to true using handleAuth function passed down from App component
+      setState({ email: '', password: '' }); //clean out the fields
+      history && history.push(id ? `properties/${id}` : '/profile');
+      //TODO: if it did NOT come from an unauthenticated user clicking on a property detail button from landing page, but rather
+      //it came from the navbar login, then we should send the user to profile page first
     } else {
       alert('Login failed');
       // throw new Error();

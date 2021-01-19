@@ -2,12 +2,13 @@
 
 import React from 'react';
 
-const Logout = ({ history }) => {
+const Logout = (props) => {
   return (
     <>
       {localStorage.removeItem('accessToken')}
       {localStorage.removeItem('userId')}
-      {history.push('/')}
+      {props.handleAuth(false)}
+      {props.history.push('/')}
     </>
   );
 };

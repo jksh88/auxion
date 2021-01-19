@@ -17,19 +17,29 @@ import Logout from './components/logout.component';
 // import Logout from './components/logout.component';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState('false');
+  const [isAuthenticated, setIsAuthenticated] = useState('false');
 
-  const handleAuth = () => {};
+  const handleAuth = (valueFromChild) => {
+    setIsAuthenticated(valueFromChild); //Q: Can I pass a callback instead?
+  };
 
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar />
+        <Navbar isAuthenticated={isAuthenticated} />
         <Switch>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
+          <Route
+            exact
+            path="/login"
+            render={(props) => <Login {...props} handleAuth={handleAuth} />}
+          />
+          <Route
+            exact
+            path="/register"
+            render={(props) => <Register {...props} handleAuth={handleAuth} />}
+          />
           <Route exact path="/" component={Landing} />
-          <Route exact path="/me" component={Profile} />
+          <Route exact path="/profile" component={Profile} />
           <Route exact path="/listproperty" component={ListProperty} />
           <Route
             exact
@@ -39,7 +49,11 @@ function App() {
           />
           <Route exact path="/properties/:id/bids" component={ByPropertyBids} />
           <Route exact path="/properties/:id/makeabid" component={MakeABid} />
-          <Route exact path="/logout" component={Logout} />
+          <Route
+            exact
+            path="/logout"
+            render={(props) => <Logout {...props} handleAuth={handleAuth} />}
+          />
 
           {/* <Route exact path="/properties/:id/bids" component={BidsPage} /> */}
         </Switch>
