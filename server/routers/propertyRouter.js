@@ -113,9 +113,10 @@ router.put('/properties/:id/bid', auth, async (req, res) => {
         ? purchasePrice
         : auction.currentHighestBid;
 
-    const idx = auction.bids.findIndex((bid) => {
-      bid.bidder.toString() === bidder.toString();
-    });
+    const idx = auction.bids.findIndex(
+      (bid) => bid.bidder.toString() === bidder.toString()
+    );
+    console.log('IDX: ', idx);
 
     if (idx === -1) {
       auction.bids.push(bid);

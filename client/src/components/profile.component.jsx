@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropertyCard from './propertyCard.component';
+import BidCard from './bidCard.component';
 const { REACT_APP_SERVER_URL } = process.env;
 
 const initialState = null;
@@ -54,6 +55,10 @@ const Profile = (props) => {
           ))}
       </div>
       <h2>My Bids </h2>
+      {user &&
+        user.auctions.map((auction) => (
+          <BidCard key={auction._id} auction={auction} />
+        ))}
     </div>
   );
 };

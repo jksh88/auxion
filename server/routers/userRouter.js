@@ -32,8 +32,28 @@ router.get('/me', auth, async (req, res) => {
   try {
     await req.user.populate('properties').execPopulate();
     await req.user.populate('auctions').execPopulate();
+    // console.log('REQ.USER.AUCTIONS: ', req.user.auctions);
+    // await Promise.all(
+    //   req.user.auctions.map(async (auction) => {
+    //     await auction.populate('propertyOnSale').execPopulate();
+    //   })
+    // );
     const { password, ...userResponse } = req.user.toObject();
-    res.send(userResponse);
+    const filteredResponse = {
+      ...userResponse,
+      auctions: userResponse.auctions.map((auction) => ({
+        ...auction,
+        bids: auction.bids.filter(
+          (bid) => bid.bidder.toString() === req.user.id.toString()
+        ),
+      })),
+    };
+    // userResponse.auctions.bids = userResponse.auctions.bids.filter(
+    //   (bid) => bid.bidder.toString() === req.user.id.toString()
+    // );
+    console.log('USERRES :', userResponse);
+
+    res.send(filteredResponse);
   } catch (err) {
     res.status(404).send(err);
   }

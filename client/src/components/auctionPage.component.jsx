@@ -51,7 +51,7 @@ const AuctionPage = (props) => {
                 {isOwner ? (
                   <OwnerAuctionInterface bids={property.auction.bids} />
                 ) : (
-                  <BuyerAuctionInterface />
+                  <BuyerAuctionInterface bids={property.auction.bids} />
                 )}
               </div>
             </div>

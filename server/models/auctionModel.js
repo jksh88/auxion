@@ -25,7 +25,8 @@ const auctionSchema = new Schema({
   auctionEndTime: { type: Date },
   propertyOnSale: {
     type: Schema.Types.ObjectId,
-    required: true, //To prevent circular reference, do NOT add `ref: 'PropertyModel;'` here. It will fail.
+    required: true,
+    // ref: 'AuctionModel', //To prevent circular reference, do NOT add `ref: 'PropertyModel;'` here. It will fail.
   },
   owner: {
     type: Schema.Types.ObjectId,

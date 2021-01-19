@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-const initialState = {
-  purchasePrice: 0,
-  deposit: 0,
-  dueDiligence: 0,
-  closingDate: new Date().toJSON().slice(0, 10),
-};
-
 const MakeABid = (props) => {
+  // console.log('PROPS.LOCATION: ', props.location);
+  const [bid] = props.location.state;
+  const initialState = {
+    purchasePrice: bid?.purchasePrice || 0, //because bid can be undefined, I need to use optional(or conditional) chaining.
+    deposit: bid?.deposit || 0,
+    dueDiligence: bid?.dueDiligence || 0,
+    closingDate: new Date(bid?.closingDate || Date.now()).toJSON().slice(0, 10),
+  };
   const [state, setState] = useState(initialState);
-  const history = useHistory();
+  // const history = useHistory();
+  const { history } = props;
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
