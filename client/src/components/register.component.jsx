@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import reactRouterDom from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -11,6 +12,7 @@ const initialState = {
 
 const Register = (props) => {
   const [state, setState] = useState(initialState);
+  const history = useHistory();
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
@@ -32,17 +34,16 @@ const Register = (props) => {
       body: JSON.stringify(user),
     });
 
-    console.log('RES is.... ', res);
-    console.log(res.error);
-
+    setState(initialState);
     if (!res.ok) {
-      alert(`${res.message}`);
-      setState(initialState);
+      const message = await res.text();
+      alert(message);
     } else {
-      const { token } = res;
+      const parsedUser = await res.json();
+      const { token, _id } = parsedUser;
       localStorage.setItem('accessToken', token);
-      // setIsAuthenticated(true);
-      // auth.login(() => history.push('/profile'));
+      localStorage.setItem('userId', _id);
+      history.push('/');
     }
   };
 

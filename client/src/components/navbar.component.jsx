@@ -2,7 +2,7 @@ import PersonAdd from '@material-ui/icons/PersonAdd';
 import Account from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ isAuthenticated }) => {
   return (
     <div
       className="Navbar"
@@ -34,12 +34,31 @@ const Navbar = () => {
           marginRight: '10%',
         }}
       >
-        <Link to="/register">
+        {isAuthenticated ? (
+          <>
+            <li>
+              <Link to="/profile">Profile</Link>
+            </li>
+            <li>
+              <Link to="/logout">Logout</Link>
+            </li>
+          </>
+        ) : (
+          <>
+            <li>
+              <Link to="/register">Register</Link>
+            </li>
+            <li>
+              <Link to="/Login">Login</Link>
+            </li>
+          </>
+        )}
+        {/* <Link to="/register">
           <PersonAdd className="nav-items" />
         </Link>
         <Link to="/login">
           <Account className="nav-items" />
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

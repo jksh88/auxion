@@ -5,13 +5,16 @@ const bcrypt = require('bcryptjs');
 const SECRET_KEY = process.env.SECRET_KEY || 'otherworldly place to be';
 const jwt = require('jsonwebtoken');
 const auth = require('../middlewares/auth');
+const PropertyModel = require('../models/propertyModel');
 
 router.post('/register', async (req, res) => {
   console.log('EMAIL FOR REGSITER IS...', req.body.email);
   const { name, email, password } = req.body;
   const user = await UserModel.findOne({ email });
+  console.log('USER on BE ', user);
   if (user) {
     res.status(409).send('User alread exists');
+    return;
   }
   try {
     const hashedPW = await bcrypt.hash(password, 10);
@@ -30,8 +33,34 @@ router.get('/me', auth, async (req, res) => {
   try {
     await req.user.populate('properties').execPopulate();
     await req.user.populate('auctions').execPopulate();
+    // console.log('REQ.USER.AUCTIONS: ', req.user.auctions);
+    // await Promise.all(
+    //   req.user.auctions.map(async (auction) => {
+    //     await auction.populate('propertyOnSale').execPopulate();
+    //   })
+    // );
     const { password, ...userResponse } = req.user.toObject();
-    res.send(userResponse);
+    const filteredResponse = {
+      ...userResponse,
+      auctions: await Promise.all(
+        userResponse.auctions.map(async (auction) => ({
+          ...auction,
+          bids: auction.bids.filter(
+            (bid) => bid.bidder.toString() === req.user.id.toString()
+          ),
+          propertyOnSale: await PropertyModel.findById(
+            auction.propertyOnSale,
+            'id images address'
+          ),
+        }))
+      ),
+    };
+    // userResponse.auctions.bids = userResponse.auctions.bids.filter(
+    //   (bid) => bid.bidder.toString() === req.user.id.toString()
+    // );
+    console.log('USERRES :', userResponse);
+
+    res.send(filteredResponse);
   } catch (err) {
     res.status(404).send(err);
   }
@@ -52,7 +81,9 @@ router.post('/login', async (req, res) => {
       throw new Error('Login failed');
     } else {
       const token = jwt.sign({ _id: user._id }, SECRET_KEY);
-      res.send({ token });
+      const { password, ...userResponse } = user.toObject();
+
+      res.send({ ...userResponse, token });
     }
   } catch (err) {
     console.log(err);

@@ -8,29 +8,25 @@ const AuctionModel = require('../models/auctionModel');
 // const multer = require('multer');
 
 router.post('/listproperty', auth, async (req, res) => {
-  const {
-    address,
-    description,
-    imageURL,
-    startPrice,
-    auctionEndTime,
-  } = req.body;
+  const { address, description, startPrice, auctionEndTime } = req.body;
   const property = new PropertyModel({
-    address,
-    description,
-    images: [imageURL],
+    address: JSON.parse(address),
+    description: JSON.parse(description),
+    images: req.files.map(
+      (file) => `http://localhost:8000/images/${file.filename}`
+    ), //req.files is an array of objects. We need array of strings with strings being the names of the files
     owner: req.user.id,
   });
-
+  // console.log('REQ.FILES: ', req.files);
   const auction = new AuctionModel({
-    startPrice,
-    currentHighestBid: startPrice,
+    startPrice: parseInt(JSON.parse(startPrice)),
+    currentHighestBid: parseInt(JSON.parse(startPrice)),
     auctionEndTime,
     propertyOnSale: property.id,
     owner: req.user.id,
   });
   property.auction = auction.id;
-  console.log('REQUEST from FE NEW: ', JSON.parse(JSON.stringify(req.body)));
+  console.log('REQUEST from FE NEW: ', req.body);
   try {
     await property.save();
     await auction.save();
@@ -58,12 +54,24 @@ router.get('/properties/:id', auth, async (req, res) => {
   const id = req.params.id; //id of the property
   try {
     const auctionProperty = await PropertyModel.findById(id); //Q: How to query an auction by property Id of its propert
-    await auctionProperty
-      .populate({ path: 'owner', select: '-auctions -email' }) //No need to send auctions information or email of the owner
-      .execPopulate();
+    // await auctionProperty
+    //   .populate({ path: 'owner', select: '-auctions -email' }) //No need to send auctions information or email of the owner
+    //   .execPopulate();
     await auctionProperty.populate('auction').execPopulate();
     // console.log(auctionProperty.address);
-    res.status(200).send(auctionProperty);
+    const propertyObject = auctionProperty.toObject(); //auctionProperty is a mongodb document. so, it needs to be changed into an object by 'toObject()' to be able to be used in JS enviornment and elements can be deconstructed therefrom
+
+    res.status(200).send({
+      ...propertyObject,
+      auction: {
+        ...propertyObject.auction,
+        bids: propertyObject.auction.bids.filter(
+          (bid) =>
+            bid.bidder.toString() === req.user.id.toString() ||
+            auctionProperty.owner.toString() === req.user.id.toString()
+        ),
+      },
+    });
   } catch (err) {
     console.log(err);
     res.status(500).send(err);
@@ -104,7 +112,21 @@ router.put('/properties/:id/bid', auth, async (req, res) => {
       auction.currentHighestBid < purchasePrice
         ? purchasePrice
         : auction.currentHighestBid;
-    auction.bids.push(bid);
+
+    const idx = auction.bids.findIndex(
+      (bid) => bid.bidder.toString() === bidder.toString()
+    );
+    console.log('IDX: ', idx);
+
+    if (idx === -1) {
+      auction.bids.push(bid);
+    } else {
+      auction.bids[idx] = bid;
+    }
+
+    //TODO: replace push with set from auction.{set:}
+    //If there is no bid currently for the user, I need to create one, but if there is one already, I need to replace it witht the new bid
+    //if (auction.bids.findIndexOf() === -1)
     await auction.save();
     // console.log('AUCTION: ', auction);
     if (!req.user.auctions.includes(auction.id)) {
@@ -131,15 +153,14 @@ router.get('/properties/:id/bids', auth, async (req, res) => {
   const id = req.params.id;
   const auction = await AuctionModel.findOne({ propertyOnSale: id });
   if (auction.owner.toString() === req.user.id.toString()) {
-    const bidsPerBidder = new Map();
+    // const bidsPerBidder = new Map();
     //id's are objects and each respective value for that id is the last bid of a particular bidder
     //In real life, a particular bidder's latest bid replaces and cancels his any previous bid(s)
-    auction.bids.forEach((bid) => {
-      bidsPerBidder.set(bid.bidder.toString(), bid); //The Map works just like an object. Becasue object.id !=== another object.id (by reference), map treated objects with with the same id as different keys. Therefore, the original logic to rewrite the value didn't work.
-    });
-    res
-      .status(200)
-      .send({ ...auction.toObject(), bids: [...bidsPerBidder.values()] });
+    // auction.bids.forEach((bid) => {
+    //   bidsPerBidder.set(bid.bidder.toString(), bid); //The Map works just like an object. Becasue object.id !=== another object.id (by reference), map treated objects with with the same id as different keys. Therefore, the original logic to rewrite the value didn't work.
+    // });
+    res.status(200).send(auction);
+    // .send({ ...auction.toObject(), bids: [...bidsPerBidder.values()] });
   }
 });
 
