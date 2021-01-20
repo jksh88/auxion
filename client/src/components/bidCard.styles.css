@@ -1,0 +1,42 @@
+.bid-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 768px;
+  height: 96px;
+  padding-right: 32px;
+  margin-bottom: 20px;
+  background: linear-gradient(to bottom left, #ef8d9c 40%, #ffc39e 100%);
+  color: white;
+  border-radius: 0.25rem;
+  box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+}
+
+.bid-card:hover {
+  cursor: pointer;
+}
+
+.property-image {
+  width: 96px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.property-image > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.green {
+  background: green;
+  color: white;
+  padding: 8px;
+}
+
+.red {
+  background: red;
+  color: white;
+  padding: 8px;
+}

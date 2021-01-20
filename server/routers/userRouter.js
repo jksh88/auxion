@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const SECRET_KEY = process.env.SECRET_KEY || 'otherworldly place to be';
 const jwt = require('jsonwebtoken');
 const auth = require('../middlewares/auth');
+const PropertyModel = require('../models/propertyModel');
 
 router.post('/register', async (req, res) => {
   console.log('EMAIL FOR REGSITER IS...', req.body.email);
@@ -41,12 +42,18 @@ router.get('/me', auth, async (req, res) => {
     const { password, ...userResponse } = req.user.toObject();
     const filteredResponse = {
       ...userResponse,
-      auctions: userResponse.auctions.map((auction) => ({
-        ...auction,
-        bids: auction.bids.filter(
-          (bid) => bid.bidder.toString() === req.user.id.toString()
-        ),
-      })),
+      auctions: await Promise.all(
+        userResponse.auctions.map(async (auction) => ({
+          ...auction,
+          bids: auction.bids.filter(
+            (bid) => bid.bidder.toString() === req.user.id.toString()
+          ),
+          propertyOnSale: await PropertyModel.findById(
+            auction.propertyOnSale,
+            'id images address'
+          ),
+        }))
+      ),
     };
     // userResponse.auctions.bids = userResponse.auctions.bids.filter(
     //   (bid) => bid.bidder.toString() === req.user.id.toString()
