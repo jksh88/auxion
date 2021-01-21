@@ -4,6 +4,9 @@ const router = new express.Router();
 const auth = require('../middlewares/auth');
 const UserModel = require('../models/userModel');
 const AuctionModel = require('../models/auctionModel');
+const { io } = require('..');
+console.log('WHAT IS IO: ', io);
+// const { Socket } = require('socket.io');
 
 // const multer = require('multer');
 
@@ -137,12 +140,16 @@ router.put('/properties/:id/bid', auth, async (req, res) => {
     //   ...auction,
     //   bids: bids.filter((bid) => bid.bidder.toString() === req.user.id),
     // };
-    res.status(200).send({
+    const userOwnBids = {
       ...auction.toObject(),
       bids: auction.bids.filter(
         (bid) => bid.bidder.toString() === bidder.toString()
       ),
+    };
+    io.on('connection', (socket) => {
+      socket.emit('bid', JSON.stringify(userOwnBids));
     });
+    // res.status(200).send(userOwnBids); //This is so that backend only sends bids that pertain to the particular user and he can't see other people's bids
   } catch (err) {
     console.log(err);
     res.status(500).send(err);

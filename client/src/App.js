@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/navbar.component';
@@ -17,12 +17,11 @@ import Logout from './components/logout.component';
 // import Logout from './components/logout.component';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState('false');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleAuth = (valueFromChild) => {
     setIsAuthenticated(valueFromChild); //Q: Can I pass a callback instead?
   };
-
   return (
     <div className="App">
       <BrowserRouter>

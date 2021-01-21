@@ -1,5 +1,11 @@
 const express = require('express');
 const app = express();
+
+const server = require('http').createServer(app);
+const io = require('socket.io')(server, {
+  cors: { origin: 'http://localhost:3000' },
+});
+console.log('IO AT INDEXJS: ', io);
 const cors = require('cors');
 const propertyRouter = require('./routers/propertyRouter');
 const userRouter = require('./routers/userRouter');
@@ -8,6 +14,7 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const { v4 } = require('uuid');
 
+// io.on('connection', () => console.log('Connected to Websocket'));
 // const upload = multer({ dest: 'public/images' });
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -41,34 +48,7 @@ mongoose.connect(process.env.DB_URL, {
   useUnifiedTopology: true,
 });
 
-app.listen(8000, () => console.log('App listening on port 8000'));
+server.listen(8000, () => console.log('App listening on port 8000'));
 
-// const PropertyModel = require('./models/propertyModel');
-// const UserModel = require('./models/UserModel');
-
-// const main = async () => {
-//   const property = await PropertyModel.findById('5faeb764d2a05adfbc9e7b22');
-//   await property.populate('owner').execPopulate();
-//   console.log(property.owner);
-// };
-
-// main();
-
-// const sub = async () => {
-//   const user = await UserModel.findById('5faeb6a4d2a05adfbc9e7b20');
-//   console.log(user);
-//   await user.populate('properties').execPopulate();
-//   console.log(user.properties);
-// };
-
-// sub();
-// const bcrypt = require('bcryptjs');
-
-// const hashIt = async (pw) => {
-//   const hpw = await bcrypt.hash(pw, 8);
-//   console.log(pw);
-//   console.log(hpw);
-//   console.log(await bcrypt.compare(pw, hpw));
-// };
-
-// hashIt('myman2293');
+module.exports = { io };
+//Normally, it's not a good practice to export anything from index.js
