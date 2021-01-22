@@ -2,6 +2,5 @@
   display: grid;
   width: 85vw;
   margin: 0 auto;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 5vw;
+  grid-template-columns: repeat(autofit, minmax(100px, 1fr));
 }

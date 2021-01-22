@@ -18,7 +18,12 @@ import Logout from './components/logout.component';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+  //I cannot start the state as false because the user might already have token in local storage when he loads the page.
+  //App.js only runs when it reloads. This is a situation for example where the user doesn't log out(meaning, the token is still in localStorage), x'es outof th page, goes away, and come back later to reopen the page.
+  //But we cannot check local storage before the page is loaded. That's why useEffect needs to be used to check local storage to see if token is there.
+  useEffect(() => {
+    setIsAuthenticated(!!localStorage.getItem('accessToken'));
+  }, []);
   const handleAuth = (valueFromChild) => {
     setIsAuthenticated(valueFromChild); //Q: Can I pass a callback instead?
   };

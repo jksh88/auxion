@@ -4,11 +4,8 @@ const router = new express.Router();
 const auth = require('../middlewares/auth');
 const UserModel = require('../models/userModel');
 const AuctionModel = require('../models/auctionModel');
-const { io } = require('..');
-console.log('WHAT IS IO: ', io);
-// const { Socket } = require('socket.io');
-
-// const multer = require('multer');
+const { io } = require('../server');
+// console.log('WHAT IS IO: ', io);
 
 router.post('/listproperty', auth, async (req, res) => {
   const { address, description, startPrice, auctionEndTime } = req.body;
@@ -111,21 +108,27 @@ router.put('/properties/:id/bid', auth, async (req, res) => {
       });
       return;
     }
-    auction.currentHighestBid =
-      auction.currentHighestBid < purchasePrice
-        ? purchasePrice
-        : auction.currentHighestBid;
 
+    //I am finding the index of the bidder in the bids array of the auction in the property(see property schema).
     const idx = auction.bids.findIndex(
       (bid) => bid.bidder.toString() === bidder.toString()
     );
-    console.log('IDX: ', idx);
-
+    // console.log('IDX: ', idx);
+    //If index is not found, that means the bidder never placed a bid before for this property.
+    //Therefore, I am pushing his bid inot the bids array.
+    //I check if the bidder has bidden for this property before, because I only keep one bid from each bidder for this property.
+    //Only the last bid from a particular bidder is kept and other discarded.
     if (idx === -1) {
       auction.bids.push(bid);
     } else {
       auction.bids[idx] = bid;
     }
+
+    //After the bid is updated, we can find the maximum bid.
+    auction.currentHighestBid = auction.bids.reduce(
+      (acc, cur) => (cur.purchasePrice > acc ? cur.purchasePrice : acc),
+      0
+    );
 
     //TODO: replace push with set from auction.{set:}
     //If there is no bid currently for the user, I need to create one, but if there is one already, I need to replace it witht the new bid
@@ -146,10 +149,12 @@ router.put('/properties/:id/bid', auth, async (req, res) => {
         (bid) => bid.bidder.toString() === bidder.toString()
       ),
     };
-    io.on('connection', (socket) => {
-      socket.emit('bid', JSON.stringify(userOwnBids));
-    });
-    // res.status(200).send(userOwnBids); //This is so that backend only sends bids that pertain to the particular user and he can't see other people's bids
+    // io.on('connection', (socket) => {
+    //   socket.emit('bid', JSON.stringify(userOwnBids));
+
+    // });
+    io.sockets.emit('bid', JSON.stringify(userOwnBids));
+    res.status(200).send(userOwnBids); //This is so that backend only sends bids that pertain to the particular user and he can't see other people's bids
   } catch (err) {
     console.log(err);
     res.status(500).send(err);

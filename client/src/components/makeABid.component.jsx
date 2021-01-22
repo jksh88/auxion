@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const MakeABid = (props) => {
-  // console.log('PROPS.LOCATION: ', props.location);
+  // console.table('PROPS.LOCATION: ', props.location);
   const [bid] = props.location.state;
   const initialState = {
     purchasePrice: bid?.purchasePrice || 0, //because bid can be undefined, I need to use optional(or conditional) chaining.

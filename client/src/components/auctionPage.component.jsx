@@ -20,6 +20,13 @@ const AuctionPage = (props) => {
       transports: ['websocket'],
     });
     socket.on('bid', (payload) => {
+      const auction = JSON.parse(payload);
+      if (auction.propertyOnSale === id) {
+        setProperty({
+          ...property,
+          auction,
+        });
+      }
       console.log(payload);
       console.log('Socket connection established');
     });
