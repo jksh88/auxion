@@ -21,7 +21,7 @@ body {
 }
 
 .property-card {
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -55,20 +55,20 @@ img {
   background-color: rgba(255, 255, 255, 0.12);
 }
 
-.cards {
+/* .cards {
   display: flex;
   flex-wrap: wrap;
   list-style: none;
   margin: 0;
   padding: 0;
-}
+} */
 
-.cards_item {
+/* .cards_item {
   display: flex;
   padding: 1rem;
-}
+} */
 
-@media (min-width: 40rem) {
+/* @media (min-width: 40rem) {
   .cards_item {
     width: 50%;
   }
@@ -78,7 +78,7 @@ img {
   .cards_item {
     width: 33.3333%;
   }
-}
+} */
 
 .card {
   background-color: white;
@@ -87,6 +87,16 @@ img {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+
+.card_image {
+  height: 164px;
+}
+
+.card_image > img {
+  width: 100%;
+  object-fit: cover;
+  height: 100%;
 }
 
 .card_content {
