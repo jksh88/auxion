@@ -14,6 +14,7 @@ const AuctionPage = (props) => {
   const [property, setProperty] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(0);
 
   useEffect(() => {
     const socket = io(process.env.REACT_APP_SERVER_URL, {
@@ -46,6 +47,12 @@ const AuctionPage = (props) => {
         console.log('DATA: ', res.data);
       })
       .catch((err) => console.log(err));
+    let endDate = new Date(
+      property && property.auction.auctionEndTime
+    ).getTime();
+    let now = new Date().getTime();
+    let timeTillEnd = endDate - now;
+    setTimeRemaining(timeTillEnd);
   }, [id]);
   //If I use some variable from outer scope(like 'id' here) in useEffect, that varialbe needs to go inside the array after the useEffect, because it's a presumption of React that I might have have forgottent it. It's because my state can be dependent on the value of that variable. This callback in useEffect will run everytime and only when the id changes.
 
@@ -53,20 +60,45 @@ const AuctionPage = (props) => {
     setIsOpen(true);
   };
 
+  // useEffect(
+  //   () =>
+  //     setInterval(() => {
+  //       let endDate = new Date(
+  //         property.auction.auctionEndTime
+  //       ).getTime();
+  //       let now = new Date().getTime();
+  //       let timeTillEnd = endDate - now;
+  //       setTimeRemaining(timeTillEnd);
+  //     }),
+  //   1000
+  // );
+
+  // useEffect(() => {
+  //   let endDate = new Date(property.auction.auctionEndTime).getTime();
+  //   let now = new Date().getTime();
+  //   let timeTillEnd = endDate - now;
+  //   setTimeRemaining(timeTillEnd);
+  // }, []);
+
   return (
     <div className="auction-page">
       {property && (
         <>
-          <section>
-            <div>{`Auction page for address ${property.address.street}`}</div>
-            <div>{`Auction page for address ${property.auction.currentHighestBid}`}</div>
-          </section>
-          <section>
+          {/* <section className="address"> */}
+          <div>{`Auction page for address ${property.address.street}`}</div>
+          {/* </section> */}
+          <section className="picture-and-auction-info">
             <div className="one-picture" onClick={openModal}>
               <img src={property.images[0]} />
             </div>
             <div className="auction-info">
-              <div>{property.auction.currentHighestBid}</div>
+              <div>
+                <h2>
+                  Current Highest Bid: {property.auction.currentHighestBid}
+                </h2>
+                <h2>Auction Ends in {timeRemaining}</h2>
+              </div>
+
               <div className="by-user-type-interface">
                 {isOwner ? (
                   <OwnerAuctionInterface bids={property.auction.bids} />
@@ -77,7 +109,36 @@ const AuctionPage = (props) => {
             </div>
           </section>
 
-          <Modal isOpen={isOpen} contentLabel="Example Modal">
+          <Modal
+            style={{
+              overlay: {
+                position: 'fixed',
+                height: '600px',
+                width: '600px',
+                top: 50,
+                left: 50,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(255, 255, 255, 0.75)',
+              },
+              content: {
+                position: 'absolute',
+                top: '40px',
+                left: '40px',
+                right: '40px',
+                bottom: '40px',
+                border: '1px solid #ccc',
+                background: '#fff',
+                overflow: 'auto',
+                WebkitOverflowScrolling: 'touch',
+                borderRadius: '4px',
+                outline: 'none',
+                padding: '20px',
+              },
+            }}
+            isOpen={isOpen}
+            contentLabel="Example Modal"
+          >
             <button onClick={() => setIsOpen(false)}>Close Modal</button>
             <PropertyPictures pics={property.images} />
           </Modal>
