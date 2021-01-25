@@ -5,6 +5,7 @@ import PropertyPictures from './propertyPictures.component';
 import OwnerAuctionInterface from './ownerAuctionInterface.component';
 import BuyerAuctionInterface from './buyerAuctionInterface.component';
 import { io } from 'socket.io-client';
+import { timeConverter } from './timerFunction';
 
 import './auctionPage.styles.css';
 const { REACT_APP_SERVER_URL } = process.env;
@@ -45,15 +46,16 @@ const AuctionPage = (props) => {
         setProperty(res.data);
         setIsOwner(localStorage.getItem('userId') === res.data.owner);
         console.log('DATA: ', res.data);
+        let endDate = new Date(res.data.auction.auctionEndTime).getTime();
+        console.log('ENDDATE: ', endDate);
+        let now = new Date().getTime();
+        console.log('NOW: ', now);
+
+        let timeTillEnd = timeConverter(endDate - now);
+        setTimeRemaining(timeTillEnd);
       })
       .catch((err) => console.log(err));
-    let endDate = new Date(
-      property && property.auction.auctionEndTime
-    ).getTime();
-    let now = new Date().getTime();
-    let timeTillEnd = endDate - now;
-    setTimeRemaining(timeTillEnd);
-  }, [id]);
+  }, []);
   //If I use some variable from outer scope(like 'id' here) in useEffect, that varialbe needs to go inside the array after the useEffect, because it's a presumption of React that I might have have forgottent it. It's because my state can be dependent on the value of that variable. This callback in useEffect will run everytime and only when the id changes.
 
   const openModal = () => {
