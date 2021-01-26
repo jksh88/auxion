@@ -48,13 +48,23 @@ const Profile = (props) => {
     <div>
       <h2>Good day, {name}</h2>
       <h2>My Properties </h2>
-      <div className="property-list">
+      <div className="my-properties">
         {user &&
           user.properties.map(({ _id, ...otherProps }) => (
             <PropertyCard key={_id} {...otherProps} id={_id} />
           ))}
       </div>
-      <h2>My Bids </h2>
+      <h2 style={{ marginTop: 20 }}>My Bids </h2>
+
+      <h4>
+        {' '}
+        <span style={{ color: 'green' }}>Green</span> if your bid price is the
+        highest bid at the moment.
+        <span style={{ color: 'red' }}> Red</span> if there is a higher bid
+        price from another buyer
+      </h4>
+
+      <h4>Click on the card to adjust your bid terms</h4>
       {user &&
         user.auctions.map((auction) => (
           <BidCard key={auction._id} auction={auction} />

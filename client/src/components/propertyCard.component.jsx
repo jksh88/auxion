@@ -20,11 +20,10 @@ const PropertyCard = ({ address, images, id }) => {
         </div>
         <div className="card_content">
           <h2 className="address">{address.street}</h2>
-          <p className="card_text">
-            Click the button to see auction status and place your bid
-          </p>
+          <h2 className="address">{address.city}</h2>
+          <h2 className="address">{address.state}</h2>
           <button className="btn" onClick={handleClick}>
-            Details
+            See details
           </button>
         </div>
       </div>

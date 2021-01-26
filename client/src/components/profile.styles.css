@@ -1,0 +1,9 @@
+.my-properties {
+  display: grid;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  grid-template-columns: repeat(autofill, 1fr);
+  grid-auto-flow: dense;
+  gap: 28px;
+}

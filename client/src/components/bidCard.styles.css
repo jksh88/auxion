@@ -3,18 +3,25 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 768px;
+  max-width: 1440px;
   height: 96px;
   padding-right: 32px;
   margin-bottom: 20px;
   background: linear-gradient(to bottom left, #ef8d9c 40%, #ffc39e 100%);
-  color: white;
+  color: black;
   border-radius: 0.25rem;
   box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .bid-card:hover {
   cursor: pointer;
+}
+
+.current-highest-bid {
+  color: 'dodger blue';
+  text-transform: uppercase;
 }
 
 .property-image {
