@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 import PropertyPictures from './propertyPictures.component';
@@ -17,21 +17,28 @@ const AuctionPage = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(0);
 
+  const socketCallback = useCallback((payload) => {
+    const auction = JSON.parse(payload);
+    if (auction.propertyOnSale === id) {
+      setProperty((curState) => {
+        console.log('CURSTATE: ', curState);
+        return {
+          ...curState,
+          auction: {
+            ...curState.auction,
+            currentHighestBid: auction.currentHighestBid,
+          },
+        };
+      });
+    }
+    console.log(payload);
+    console.log('Socket connection established');
+  });
   useEffect(() => {
     const socket = io(process.env.REACT_APP_SERVER_URL, {
       transports: ['websocket'],
     });
-    socket.on('bid', (payload) => {
-      const auction = JSON.parse(payload);
-      if (auction.propertyOnSale === id) {
-        setProperty({
-          ...property,
-          auction,
-        });
-      }
-      console.log(payload);
-      console.log('Socket connection established');
-    });
+    socket.on('bid', socketCallback);
     //I don't need to import process.env above. React does it for me as long as I have it included in the .env file.
 
     //It's good to have the socket.io client function in useEffect callback because we need to make sure the compoent has loaded first because client relies on broswer.
@@ -55,6 +62,7 @@ const AuctionPage = (props) => {
         setTimeRemaining(timeTillEnd);
       })
       .catch((err) => console.log(err));
+    return () => socket.disconnect();
   }, []);
   //If I use some variable from outer scope(like 'id' here) in useEffect, that varialbe needs to go inside the array after the useEffect, because it's a presumption of React that I might have have forgottent it. It's because my state can be dependent on the value of that variable. This callback in useEffect will run everytime and only when the id changes.
 
@@ -62,32 +70,12 @@ const AuctionPage = (props) => {
     setIsOpen(true);
   };
 
-  // useEffect(
-  //   () =>
-  //     setInterval(() => {
-  //       let endDate = new Date(
-  //         property.auction.auctionEndTime
-  //       ).getTime();
-  //       let now = new Date().getTime();
-  //       let timeTillEnd = endDate - now;
-  //       setTimeRemaining(timeTillEnd);
-  //     }),
-  //   1000
-  // );
-
-  // useEffect(() => {
-  //   let endDate = new Date(property.auction.auctionEndTime).getTime();
-  //   let now = new Date().getTime();
-  //   let timeTillEnd = endDate - now;
-  //   setTimeRemaining(timeTillEnd);
-  // }, []);
-
   return (
     <div className="auction-page">
       {property && (
         <>
           {/* <section className="address"> */}
-          <div>{`Auction page for address ${property.address.street}`}</div>
+          <div>{`Auction page for address ${property.address?.street}`}</div>
           {/* </section> */}
           <section className="picture-and-auction-info">
             <div className="one-picture" onClick={openModal}>
@@ -115,10 +103,10 @@ const AuctionPage = (props) => {
             style={{
               overlay: {
                 position: 'fixed',
-                height: '600px',
-                width: '600px',
-                top: 50,
-                left: 50,
+                height: '660px',
+                width: '680px',
+                top: 80,
+                left: 80,
                 right: 0,
                 bottom: 0,
                 backgroundColor: 'rgba(255, 255, 255, 0.75)',
