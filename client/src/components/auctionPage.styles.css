@@ -1,3 +1,27 @@
+.address {
+  color: black;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.picture-and-auction-info {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.one-picture {
+  max-height: 400px;
+  max-width: 400px;
+  padding: 20px;
+}
+
 .auction-page {
   display: flex;
+  padding: 20px;
+}
+
+Modal {
+  height: 800px;
+  width: 800px;
 }

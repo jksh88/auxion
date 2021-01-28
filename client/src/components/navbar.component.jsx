@@ -1,5 +1,3 @@
-import PersonAdd from '@material-ui/icons/PersonAdd';
-import Account from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
 
 const Navbar = ({ isAuthenticated }) => {
@@ -25,6 +23,9 @@ const Navbar = ({ isAuthenticated }) => {
           <button className="list-button">LIST MY PROPERTY</button>
         </Link>
       </div>
+      <div className="about">
+        <Link to="/about">ABOUT</Link>
+      </div>
       <div
         className="nav-right"
         style={{
@@ -37,28 +38,22 @@ const Navbar = ({ isAuthenticated }) => {
         {isAuthenticated ? (
           <>
             <li>
-              <Link to="/profile">Profile</Link>
+              <Link to="/profile">PROFILE</Link>
             </li>
             <li>
-              <Link to="/logout">Logout</Link>
+              <Link to="/logout">LOGOUT</Link>
             </li>
           </>
         ) : (
           <>
             <li>
-              <Link to="/register">Register</Link>
+              <Link to="/register">REGISTER</Link>
             </li>
             <li>
-              <Link to="/Login">Login</Link>
+              <Link to="/Login">LOGIN</Link>
             </li>
           </>
         )}
-        {/* <Link to="/register">
-          <PersonAdd className="nav-items" />
-        </Link>
-        <Link to="/login">
-          <Account className="nav-items" />
-        </Link> */}
       </div>
     </div>
   );

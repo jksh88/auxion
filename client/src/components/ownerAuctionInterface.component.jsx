@@ -16,7 +16,6 @@ const OwnerAuctionInterface = (props) => {
       >
         See all bids
       </button>
-      <h1>HHI from OwnerAuctionInterface</h1>);
     </div>
   );
 };

@@ -183,7 +183,12 @@ const ListProperty = (props) => {
           </label>
         </div>
         <br />
-        <input type="file" multiple={true} onChange={handlePhotoSelect} />
+        <input
+          type="file"
+          multiple={true}
+          onChange={handlePhotoSelect}
+          accept="image/*"
+        />
         {/*To enable multiple file uplaod, set multiple attribute to true(Don't do quotes. Wrap true in curly braces) */}
         {/* <input type="submit" value="click"></input> */}
         <br />

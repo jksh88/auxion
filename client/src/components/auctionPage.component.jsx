@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 import PropertyPictures from './propertyPictures.component';
 import OwnerAuctionInterface from './ownerAuctionInterface.component';
 import BuyerAuctionInterface from './buyerAuctionInterface.component';
+import { io } from 'socket.io-client';
+import { timeConverter } from './timerFunction';
 
 import './auctionPage.styles.css';
 const { REACT_APP_SERVER_URL } = process.env;
@@ -13,8 +15,34 @@ const AuctionPage = (props) => {
   const [property, setProperty] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(0);
 
-  useEffect(async () => {
+  const socketCallback = useCallback((payload) => {
+    const auction = JSON.parse(payload);
+    if (auction.propertyOnSale === id) {
+      setProperty((curState) => {
+        console.log('CURSTATE: ', curState);
+        return {
+          ...curState,
+          auction: {
+            ...curState.auction,
+            currentHighestBid: auction.currentHighestBid,
+          },
+        };
+      });
+    }
+    console.log(payload);
+    console.log('Socket connection established');
+  });
+  useEffect(() => {
+    const socket = io(process.env.REACT_APP_SERVER_URL, {
+      transports: ['websocket'],
+    });
+    socket.on('bid', socketCallback);
+    //I don't need to import process.env above. React does it for me as long as I have it included in the .env file.
+
+    //It's good to have the socket.io client function in useEffect callback because we need to make sure the compoent has loaded first because client relies on broswer.
+
     axios
       .get(`${REACT_APP_SERVER_URL}/properties/${id}`, {
         headers: {
@@ -25,9 +53,18 @@ const AuctionPage = (props) => {
         setProperty(res.data);
         setIsOwner(localStorage.getItem('userId') === res.data.owner);
         console.log('DATA: ', res.data);
+        let endDate = new Date(res.data.auction.auctionEndTime).getTime();
+        console.log('ENDDATE: ', endDate);
+        let now = new Date().getTime();
+        console.log('NOW: ', now);
+
+        let timeTillEnd = timeConverter(endDate - now);
+        setTimeRemaining(timeTillEnd);
       })
       .catch((err) => console.log(err));
+    return () => socket.disconnect();
   }, []);
+  //If I use some variable from outer scope(like 'id' here) in useEffect, that varialbe needs to go inside the array after the useEffect, because it's a presumption of React that I might have have forgottent it. It's because my state can be dependent on the value of that variable. This callback in useEffect will run everytime and only when the id changes.
 
   const openModal = () => {
     setIsOpen(true);
@@ -37,16 +74,21 @@ const AuctionPage = (props) => {
     <div className="auction-page">
       {property && (
         <>
-          <section>
-            <div>{`Auction page for address ${property.address.street}`}</div>
-            <div>{`Auction page for address ${property.auction.currentHighestBid}`}</div>
-          </section>
-          <section>
+          {/* <section className="address"> */}
+          <div>{`Auction page for address ${property.address?.street}`}</div>
+          {/* </section> */}
+          <section className="picture-and-auction-info">
             <div className="one-picture" onClick={openModal}>
               <img src={property.images[0]} />
             </div>
             <div className="auction-info">
-              <div>{property.auction.currentHighestBid}</div>
+              <div>
+                <h2>
+                  Current Highest Bid: {property.auction.currentHighestBid}
+                </h2>
+                <h2>Auction Ends in {timeRemaining}</h2>
+              </div>
+
               <div className="by-user-type-interface">
                 {isOwner ? (
                   <OwnerAuctionInterface bids={property.auction.bids} />
@@ -57,7 +99,36 @@ const AuctionPage = (props) => {
             </div>
           </section>
 
-          <Modal isOpen={isOpen} contentLabel="Example Modal">
+          <Modal
+            style={{
+              overlay: {
+                position: 'fixed',
+                height: '660px',
+                width: '680px',
+                top: 80,
+                left: 80,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(255, 255, 255, 0.75)',
+              },
+              content: {
+                position: 'absolute',
+                top: '40px',
+                left: '40px',
+                right: '40px',
+                bottom: '40px',
+                border: '1px solid #ccc',
+                background: '#fff',
+                overflow: 'auto',
+                WebkitOverflowScrolling: 'touch',
+                borderRadius: '4px',
+                outline: 'none',
+                padding: '20px',
+              },
+            }}
+            isOpen={isOpen}
+            contentLabel="Example Modal"
+          >
             <button onClick={() => setIsOpen(false)}>Close Modal</button>
             <PropertyPictures pics={property.images} />
           </Modal>

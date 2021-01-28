@@ -19,9 +19,12 @@ const BidCard = ({ auction }) => {
       <div className="property-image">
         <img src={images[0]} />
       </div>
-      <div>{address.street}</div>
+      <div>{`${address.street}, ${address.city} ${address.state}`}</div>
+      <div className="current-highest-bid">
+        CURRENT HIGHEST BID: {currentHighestBid}{' '}
+      </div>
       <div className={purchasePrice === currentHighestBid ? 'green' : 'red'}>
-        {purchasePrice}
+        YOUR BID: {purchasePrice}
       </div>
     </div>
   );

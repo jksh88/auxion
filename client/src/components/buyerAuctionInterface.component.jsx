@@ -6,6 +6,7 @@ const BuyerAuctionInterface = (props) => {
   const history = useHistory();
   return (
     <div>
+      <h3>Click the image to see more pictures</h3>
       <button
         // onClick={() => history.push(`${history.location.pathname}/makeabid`)}
         onClick={() =>
@@ -17,7 +18,6 @@ const BuyerAuctionInterface = (props) => {
       >
         Make a bid
       </button>
-      <h1>HHI from BuyerAuctionInterface</h1>);
     </div>
   );
 };
