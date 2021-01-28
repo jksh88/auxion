@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import PropertyCard from './propertyCard.component';
 import BidCard from './bidCard.component';
 import { io } from 'socket.io-client';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 
 const { REACT_APP_SERVER_URL } = process.env;
 
@@ -89,7 +90,10 @@ const Profile = (props) => {
         price from another buyer
       </h4>
 
-      <h4>Click on the card to adjust your bid terms</h4>
+      <h4>
+        Click on the card to adjust your bid terms
+        <ArrowDownwardIcon className="arrow-downward" />
+      </h4>
       {user &&
         user.auctions.map((auction) => (
           <BidCard key={auction._id} auction={auction} />

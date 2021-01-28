@@ -6,13 +6,13 @@
   box-sizing: border-box;
 }
 
-html {
+/* html {
   background-color: #ecf9ff;
-}
+} */
 
 body {
   color: #272727;
-  font-family: 'Quicksand', serif;
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   padding: 1rem;
@@ -25,4 +25,27 @@ a {
 
 li {
   list-style-type: none;
+}
+
+button {
+  background: dodgerblue;
+  padding: 5px;
+  color: white;
+  font-weight: bold;
+  border-radius: 10%;
+}
+
+form {
+  background-color: #1c2930;
+  color: white;
+  display: 'flex';
+  flex-direction: 'column';
+  width: '30vw';
+  margin: '0 auto';
+  margin-top: '8vw';
+  justify-content: 'space-around';
+  height: '35vw';
+  border: '1px solid grey';
+  border-radius: '1rem';
+  padding: '3rem';
 }

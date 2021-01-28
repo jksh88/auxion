@@ -7,3 +7,20 @@
   grid-auto-flow: dense;
   gap: 28px;
 }
+
+@keyframes movedown {
+  from {
+    transform: translateY(0px);
+  }
+
+  to {
+    transform: translateY(10px);
+  }
+}
+
+.arrow-downward {
+  color: red;
+  animation-name: movedown;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}

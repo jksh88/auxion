@@ -1,0 +1,41 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #eeeeee;
+  height: 6vw;
+  min-height: 60px;
+}
+
+.logo {
+  height: 5vw;
+}
+
+.nav-left {
+  /* width: 10%; */
+  display: flex;
+  justify-content: flex-end;
+}
+
+.list-area {
+  clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
+  background-color: dodgerblue;
+
+  height: 100%;
+  line-height: 100%;
+  text-align: center;
+}
+
+.list-area:hover {
+  background-color: rgb(9, 116, 45);
+  transition: 0.2s;
+}
+
+.list-text {
+  vertical-align: middle;
+  display: inline-block;
+  line-height: 1.5;
+  color: white;
+  padding: 4px 30px 0 30px;
+}

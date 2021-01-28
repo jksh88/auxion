@@ -79,122 +79,123 @@ const ListProperty = (props) => {
   //   });
   // };
   return (
-    <div>
-      <h2>Property Listing Form</h2>
-      <span>Provide property address and Photo</span>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="street">
-            Street
-            <input
-              type="text"
-              value={address.street}
-              onChange={handleAddressChange}
-              name="street"
-              id="street"
-              placeholder="Enter street"
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="city">
-            City
-            <input
-              type="text"
-              value={address.city}
-              onChange={handleAddressChange}
-              name="city"
-              us="city"
-              placeholder="Enter city"
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="state">
-            State
-            <input
-              type="text"
-              value={address.state}
-              onChange={handleAddressChange}
-              name="state"
-              id="state"
-              placeholder="Enter state"
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="zip">
-            Zip
-            <input
-              type="text"
-              value={address.zip}
-              onChange={handleAddressChange}
-              name="zip"
-              id="zip"
-              placeholder="Enter zip"
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="description">
-            Description
-            <textarea
-              value={description}
-              onChange={handleDescriptionChange}
-              name="description"
-              id="description"
-              placeholder="Enter description"
-              resize="vertical"
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="startPrice">
-            Start Price
-            <input
-              type="number"
-              value={startPrice}
-              onChange={handleStartPriceChange}
-              name="startPrice"
-              id="startPrice"
-              placeholder="Enter start price for the auction"
-              min="0" //validation added to prevent inputting negative number
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="auctionEndTime">
-            Auction End Time
-            <input
-              type="date"
-              value={auctionEndTime}
-              onChange={handleAuctionEndTimeChange}
-              name="auctionEndTime"
-              id="auctionEndTime"
-              min={new Date().toJSON().slice(0, 10)}
-              required
-            />
-          </label>
-        </div>
-        <br />
-        <input
-          type="file"
-          multiple={true}
-          onChange={handlePhotoSelect}
-          accept="image/*"
-        />
-        {/*To enable multiple file uplaod, set multiple attribute to true(Don't do quotes. Wrap true in curly braces) */}
-        {/* <input type="submit" value="click"></input> */}
-        <br />
-        <button>List My Property!</button>
-      </form>
-    </div>
+    // <div>
+    //   <h2>Property Listing Form</h2>
+    //   <span>Provide property address and Photo</span>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="street">
+          Street
+          <input
+            type="text"
+            value={address.street}
+            onChange={handleAddressChange}
+            name="street"
+            id="street"
+            placeholder="Enter street"
+            required
+            style={{ width: '100%' }}
+          />
+        </label>
+      </div>
+      <div>
+        <label htmlFor="city">
+          City
+          <input
+            type="text"
+            value={address.city}
+            onChange={handleAddressChange}
+            name="city"
+            us="city"
+            placeholder="Enter city"
+            required
+          />
+        </label>
+      </div>
+      <div>
+        <label htmlFor="state">
+          State
+          <input
+            type="text"
+            value={address.state}
+            onChange={handleAddressChange}
+            name="state"
+            id="state"
+            placeholder="Enter state"
+            required
+          />
+        </label>
+      </div>
+      <div>
+        <label htmlFor="zip">
+          Zip
+          <input
+            type="text"
+            value={address.zip}
+            onChange={handleAddressChange}
+            name="zip"
+            id="zip"
+            placeholder="Enter zip"
+            required
+          />
+        </label>
+      </div>
+      <div>
+        <label htmlFor="description">
+          Description
+          <textarea
+            value={description}
+            onChange={handleDescriptionChange}
+            name="description"
+            id="description"
+            placeholder="Enter description"
+            resize="vertical"
+            required
+          />
+        </label>
+      </div>
+      <div>
+        <label htmlFor="startPrice">
+          Start Price
+          <input
+            type="number"
+            value={startPrice}
+            onChange={handleStartPriceChange}
+            name="startPrice"
+            id="startPrice"
+            placeholder="Enter start price for the auction"
+            min="0" //validation added to prevent inputting negative number
+            required
+          />
+        </label>
+      </div>
+      <div>
+        <label htmlFor="auctionEndTime">
+          Auction End Time
+          <input
+            type="date"
+            value={auctionEndTime}
+            onChange={handleAuctionEndTimeChange}
+            name="auctionEndTime"
+            id="auctionEndTime"
+            min={new Date().toJSON().slice(0, 10)}
+            required
+          />
+        </label>
+      </div>
+      <br />
+      <input
+        type="file"
+        multiple={true}
+        onChange={handlePhotoSelect}
+        accept="image/*"
+      />
+      {/*To enable multiple file uplaod, set multiple attribute to true(Don't do quotes. Wrap true in curly braces) */}
+      {/* <input type="submit" value="click"></input> */}
+      <br />
+      <button>List My Property!</button>
+    </form>
+    // </div>
   );
 };
 

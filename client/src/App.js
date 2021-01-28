@@ -12,6 +12,7 @@ import Profile from './components/profile.component';
 import ByPropertyBids from './components/byPropertyBids.component';
 import MakeABid from './components/makeABid.component';
 import Logout from './components/logout.component';
+import AboutPage from './components/aboutPage.component';
 
 // import Profile from '../profile.component';
 // import Logout from './components/logout.component';
@@ -45,6 +46,7 @@ function App() {
           <Route exact path="/" component={Landing} />
           <Route exact path="/profile" component={Profile} />
           <Route exact path="/listproperty" component={ListProperty} />
+          <Route exact path="/about" component={AboutPage} />
           <Route
             exact
             path="/properties/:id"
