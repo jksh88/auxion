@@ -1,0 +1,23 @@
+.table-container {
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.table-container th,
+.table-container td {
+  padding: 6px 12px;
+  text-align: right;
+}
+
+.table-container th {
+  font-size: smaller;
+}
+
+.table-container thead tr {
+  color: white;
+  background-color: #1c2930;
+}
+
+.table-container tbody tr:hover {
+  background-color: #f6f8fa;
+}

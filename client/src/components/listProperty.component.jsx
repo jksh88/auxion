@@ -84,104 +84,88 @@ const ListProperty = (props) => {
     //   <span>Provide property address and Photo</span>
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="street">
-          Street
-          <input
-            type="text"
-            value={address.street}
-            onChange={handleAddressChange}
-            name="street"
-            id="street"
-            placeholder="Enter street"
-            required
-            style={{ width: '100%' }}
-          />
-        </label>
+        <label htmlFor="street">Street</label>
+        <input
+          type="text"
+          value={address.street}
+          onChange={handleAddressChange}
+          name="street"
+          id="street"
+          placeholder="Enter street"
+          required
+        />
       </div>
       <div>
-        <label htmlFor="city">
-          City
-          <input
-            type="text"
-            value={address.city}
-            onChange={handleAddressChange}
-            name="city"
-            us="city"
-            placeholder="Enter city"
-            required
-          />
-        </label>
+        <label htmlFor="city">City</label>
+        <input
+          type="text"
+          value={address.city}
+          onChange={handleAddressChange}
+          name="city"
+          us="city"
+          placeholder="Enter city"
+          required
+        />
       </div>
       <div>
-        <label htmlFor="state">
-          State
-          <input
-            type="text"
-            value={address.state}
-            onChange={handleAddressChange}
-            name="state"
-            id="state"
-            placeholder="Enter state"
-            required
-          />
-        </label>
+        <label htmlFor="state">State</label>
+        <input
+          type="text"
+          value={address.state}
+          onChange={handleAddressChange}
+          name="state"
+          id="state"
+          placeholder="Enter state"
+          required
+        />
       </div>
       <div>
-        <label htmlFor="zip">
-          Zip
-          <input
-            type="text"
-            value={address.zip}
-            onChange={handleAddressChange}
-            name="zip"
-            id="zip"
-            placeholder="Enter zip"
-            required
-          />
-        </label>
+        <label htmlFor="zip">Zip</label>
+        <input
+          type="text"
+          value={address.zip}
+          onChange={handleAddressChange}
+          name="zip"
+          id="zip"
+          placeholder="Enter zip"
+          required
+        />
       </div>
       <div>
-        <label htmlFor="description">
-          Description
-          <textarea
-            value={description}
-            onChange={handleDescriptionChange}
-            name="description"
-            id="description"
-            placeholder="Enter description"
-            resize="vertical"
-            required
-          />
-        </label>
+        <label htmlFor="description">Description </label>
+        <textarea
+          value={description}
+          onChange={handleDescriptionChange}
+          name="description"
+          id="description"
+          placeholder="Enter description"
+          required
+        />
       </div>
       <div>
-        <label htmlFor="startPrice">
-          Start Price
-          <input
-            type="number"
-            value={startPrice}
-            onChange={handleStartPriceChange}
-            name="startPrice"
-            id="startPrice"
-            placeholder="Enter start price for the auction"
-            min="0" //validation added to prevent inputting negative number
-            required
-          />
-        </label>
+        <label htmlFor="startPrice">Start Price</label>
+        <input
+          type="number"
+          value={startPrice}
+          onChange={handleStartPriceChange}
+          name="startPrice"
+          id="startPrice"
+          placeholder="Enter start price for the auction"
+          min="0" //validation added to prevent inputting negative number
+          required
+        />
       </div>
       <div>
-        <label htmlFor="auctionEndTime">
-          Auction End Time
-          <input
-            type="date"
-            value={auctionEndTime}
-            onChange={handleAuctionEndTimeChange}
-            name="auctionEndTime"
-            id="auctionEndTime"
-            min={new Date().toJSON().slice(0, 10)}
-            required
-          />
-        </label>
+        <label htmlFor="auctionEndTime">Auction End Time</label>
+        <input
+          type="date"
+          value={auctionEndTime}
+          onChange={handleAuctionEndTimeChange}
+          name="auctionEndTime"
+          id="auctionEndTime"
+          min={new Date().toJSON().slice(0, 10)}
+          required
+        />
       </div>
       <br />
       <input

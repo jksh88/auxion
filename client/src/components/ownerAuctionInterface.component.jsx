@@ -1,11 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import './ownerAuctionInterface.styles.css';
 
 const OwnerAuctionInterface = (props) => {
   const history = useHistory();
   console.log(history);
   return (
-    <div>
+    <div className="owner-auction-interface">
       <button
         onClick={() =>
           history.push({
@@ -16,6 +17,8 @@ const OwnerAuctionInterface = (props) => {
       >
         See all bids
       </button>
+
+      <button className="button-secondary">Change listing terms</button>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import PropertyCard from './propertyCard.component';
 import BidCard from './bidCard.component';
 import { io } from 'socket.io-client';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import './profile.styles.css';
 
 const { REACT_APP_SERVER_URL } = process.env;
 

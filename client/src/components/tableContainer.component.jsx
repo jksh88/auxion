@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTable, useSortBy } from 'react-table';
+import './tableContainer.styles.css';
 
 const TableContainer = ({ columns, data }) => {
   const {
@@ -24,7 +25,7 @@ const TableContainer = ({ columns, data }) => {
   return (
     // If curious what props I get as a result of calling the getter functions (getTableProps(), getRowProps())
     // Use console.log()  This will help better understand how react table works underhood.
-    <table {...getTableProps()}>
+    <table className="table-container" {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>

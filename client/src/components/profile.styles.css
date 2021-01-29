@@ -3,24 +3,31 @@
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  grid-template-columns: repeat(autofill, 1fr);
+  /* grid-template-columns: repeat(autofill, 1fr); */
+  grid-template-columns: repeat(auto-fit, minmax(264px, 300px));
+
   grid-auto-flow: dense;
   gap: 28px;
 }
 
 @keyframes movedown {
-  from {
-    transform: translateY(0px);
+  0% {
+    transform: translateY(0);
   }
 
-  to {
+  50% {
     transform: translateY(10px);
+  }
+
+  60% {
+    transform: translateY(0);
   }
 }
 
 .arrow-downward {
-  color: red;
+  color: #808080;
   animation-name: movedown;
   animation-duration: 2s;
   animation-iteration-count: infinite;
+  animation-delay: 1s;
 }

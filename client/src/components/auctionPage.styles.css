@@ -18,7 +18,15 @@
 
 .auction-page {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
+}
+
+.auction-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 Modal {

@@ -6,10 +6,6 @@
   box-sizing: border-box;
 }
 
-/* html {
-  background-color: #ecf9ff;
-} */
-
 body {
   color: #272727;
   font-family: sans-serif;
@@ -29,23 +25,18 @@ li {
 
 button {
   background: dodgerblue;
-  padding: 5px;
+  padding: 12px 14px; /*This is material UI dimenstion for buttons. Trying to mimic material UI style here*/
   color: white;
   font-weight: bold;
-  border-radius: 10%;
+  border-radius: 6px; /*For non-square shaped elements, don't do percent. Always use rem or px*/
+  border: none; /*Reset default border. Border is there by html default*/
 }
 
-form {
-  background-color: #1c2930;
-  color: white;
-  display: 'flex';
-  flex-direction: 'column';
-  width: '30vw';
-  margin: '0 auto';
-  margin-top: '8vw';
-  justify-content: 'space-around';
-  height: '35vw';
-  border: '1px solid grey';
-  border-radius: '1rem';
-  padding: '3rem';
+.button-secondary {
+  background: white;
+  padding: 12px 14px; /*This is material UI dimenstion for buttons. Trying to mimic material UI style here*/
+  color: dodgerblue;
+  font-weight: bold;
+  border-radius: 6px; /*For non-square shaped elements, don't do percent. Always use rem or px*/
+  border: 1px solid dodgerblue; /*Reset default border. Border is there by html default*/
 }
