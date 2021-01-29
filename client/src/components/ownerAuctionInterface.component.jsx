@@ -18,7 +18,18 @@ const OwnerAuctionInterface = (props) => {
         See all bids
       </button>
 
-      <button className="button-secondary">Change listing terms</button>
+      <button
+        className="button-secondary"
+        onClick={() =>
+          history.push({
+            pathname: `${history.location.pathname}/edit`,
+            // state: props.auction,
+            //TODO: figure out how to pre-populate existing listing terms on edit form
+          })
+        }
+      >
+        Change listing terms
+      </button>
     </div>
   );
 };

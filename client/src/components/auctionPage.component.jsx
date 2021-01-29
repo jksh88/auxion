@@ -82,7 +82,9 @@ const AuctionPage = (props) => {
       {property && (
         <>
           {/* <section className="address"> */}
-          <div>{`Auction page for address ${property.address?.street}`}</div>
+          <div>
+            <h1>{`Auction page for ${property.address?.street}, ${property.address?.city}, ${property.address?.state}`}</h1>
+          </div>
           {/* </section> */}
           <section className="picture-and-auction-info">
             <div className="one-picture" onClick={openModal}>
@@ -99,7 +101,10 @@ const AuctionPage = (props) => {
 
               <div className="by-user-type-interface">
                 {isOwner ? (
-                  <OwnerAuctionInterface bids={property.auction.bids} />
+                  <OwnerAuctionInterface
+                    id={property.auction.propertyOnSale}
+                    bids={property.auction.bids}
+                  />
                 ) : (
                   <BuyerAuctionInterface bids={property.auction.bids} />
                 )}

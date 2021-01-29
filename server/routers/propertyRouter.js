@@ -176,10 +176,19 @@ router.get('/properties/:id/bids', auth, async (req, res) => {
   }
 });
 
-router.patch('/properties/:id', auth, async (req, res) => {
+router.patch('/properties/:id/edit', auth, async (req, res) => {
   const { description, available, images } = req.body;
   const id = req.params.id;
-  if (!req.user.properties.some((property) => property.id.toString() === id)) {
+  if (!req.user.properties.some((property) => property._id.toString() === id)) {
+    console.log('REQ.USER**: ', req.user);
+    //TODO: this user came from auth middleware right?
+    //TODO: How was poperties populated for user without manually populating?
+    //TODO: Why is password not shown on backend terminal?
+
+    //TDODO: Why are we using some??
+    //TODO: Is it not property._id? Update: I changed it to _id and now it works. How did it work before when we tested with just id?
+
+    console.log('ID**: ', id);
     res.status(401).send('Unauthorized');
     return;
   }

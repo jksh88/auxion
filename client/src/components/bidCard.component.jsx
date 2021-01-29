@@ -18,7 +18,7 @@ const BidCard = ({ auction }) => {
   return (
     <div onClick={handleClick} className="bid-card">
       <div className="property-image">
-        <img src={images[0]} />
+        <img src={images[0]} alt="property picture" />
       </div>
       <div>{`${address.street}, ${address.city} ${address.state}`}</div>
       <div className="current-highest-bid">
