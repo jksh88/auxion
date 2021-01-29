@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import './bidCard.styles.css';
+import { convertAmount } from './convertAmount';
 
 const BidCard = ({ auction }) => {
   const history = useHistory();
@@ -21,10 +22,10 @@ const BidCard = ({ auction }) => {
       </div>
       <div>{`${address.street}, ${address.city} ${address.state}`}</div>
       <div className="current-highest-bid">
-        CURRENT HIGHEST BID: {currentHighestBid}{' '}
+        CURRENT HIGHEST BID: {convertAmount(currentHighestBid)}{' '}
       </div>
       <div className={purchasePrice === currentHighestBid ? 'green' : 'red'}>
-        YOUR BID: {purchasePrice}
+        YOUR BID: {convertAmount(purchasePrice)}
       </div>
     </div>
   );

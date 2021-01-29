@@ -20,7 +20,6 @@ const Navbar = ({ isAuthenticated }) => {
       <div className="about">
         <Link to="/about">ABOUT</Link>
       </div>
-      {/* <div className="nav-right"> */}
       {isAuthenticated ? (
         <>
           <div>

@@ -6,6 +6,7 @@ import OwnerAuctionInterface from './ownerAuctionInterface.component';
 import BuyerAuctionInterface from './buyerAuctionInterface.component';
 import { io } from 'socket.io-client';
 import { timeConverter } from './timerFunction';
+import { convertAmount } from './convertAmount';
 
 import './auctionPage.styles.css';
 const { REACT_APP_SERVER_URL } = process.env;
@@ -90,7 +91,8 @@ const AuctionPage = (props) => {
             <div className="auction-info">
               <div>
                 <h2>
-                  Current Highest Bid: {property.auction.currentHighestBid}
+                  Current Highest Bid:{' '}
+                  {convertAmount(property.auction.currentHighestBid)}
                 </h2>
                 Auction Ends in {timeRemaining}
               </div>
