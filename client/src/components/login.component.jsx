@@ -66,35 +66,37 @@ const Login = (props) => {
     <form
       className="sign-in"
       onSubmit={handleSubmit}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '30vw',
-        margin: '0 auto',
-        marginTop: '8vw',
-        justifyContent: 'space-around',
-        height: '35vw',
-        border: '1px solid grey',
-        borderRadius: '1rem',
-        padding: '3rem',
-      }}
+      // style={{
+      //   display: 'flex',
+      //   flexDirection: 'column',
+      //   width: '30vw',
+      //   margin: '0 auto',
+      //   marginTop: '8vw',
+      //   justifyContent: 'space-around',
+      //   height: '35vw',
+      //   border: '1px solid grey',
+      //   borderRadius: '1rem',
+      //   padding: '3rem',
+      // }}
     >
       <div className="field" style={{ width: '100%' }}>
-        <label>email</label>
-        <input
-          name="email"
-          type="email"
-          value={state.email}
-          onChange={handleChange}
-          required
-          style={{
-            width: '100%',
-            letterSpacing: '.2rem',
-            height: '2rem',
-            border: 'none',
-            borderBottom: '1px solid grey',
-          }}
-        />
+        <label>
+          email
+          <input
+            name="email"
+            type="email"
+            value={state.email}
+            onChange={handleChange}
+            required
+            style={{
+              width: '100%',
+              letterSpacing: '.2rem',
+              height: '2rem',
+              border: 'none',
+              borderBottom: '1px solid grey',
+            }}
+          />
+        </label>
       </div>
       <div className="field">
         <label>password</label>

@@ -15,10 +15,10 @@ const PropertyCard = ({ address, images, id }) => {
   return (
     <div className="property-card">
       <div className="card">
-        <div className="card_image">
+        <div className="card-image">
           <img src={images[0]} alt="property images" />
         </div>
-        <div className="card_content">
+        <div className="card-content">
           <h2 className="address">{address.street}</h2>
           <h2 className="address">{address.city}</h2>
           <h2 className="address">{address.state}</h2>

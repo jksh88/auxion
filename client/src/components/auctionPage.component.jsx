@@ -6,6 +6,7 @@ import OwnerAuctionInterface from './ownerAuctionInterface.component';
 import BuyerAuctionInterface from './buyerAuctionInterface.component';
 import { io } from 'socket.io-client';
 import { timeConverter } from './timerFunction';
+import { convertAmount } from './convertAmount';
 
 import './auctionPage.styles.css';
 const { REACT_APP_SERVER_URL } = process.env;
@@ -66,6 +67,12 @@ const AuctionPage = (props) => {
   }, []);
   //If I use some variable from outer scope(like 'id' here) in useEffect, that varialbe needs to go inside the array after the useEffect, because it's a presumption of React that I might have have forgottent it. It's because my state can be dependent on the value of that variable. This callback in useEffect will run everytime and only when the id changes.
 
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setTimeRemaining();
+  //   });
+  // });
+
   const openModal = () => {
     setIsOpen(true);
   };
@@ -75,7 +82,9 @@ const AuctionPage = (props) => {
       {property && (
         <>
           {/* <section className="address"> */}
-          <div>{`Auction page for address ${property.address?.street}`}</div>
+          <div>
+            <h1>{`Auction page for ${property.address?.street}, ${property.address?.city}, ${property.address?.state}`}</h1>
+          </div>
           {/* </section> */}
           <section className="picture-and-auction-info">
             <div className="one-picture" onClick={openModal}>
@@ -84,14 +93,19 @@ const AuctionPage = (props) => {
             <div className="auction-info">
               <div>
                 <h2>
-                  Current Highest Bid: {property.auction.currentHighestBid}
+                  Current Highest Bid:{' '}
+                  {convertAmount(property.auction.currentHighestBid)}
                 </h2>
-                <h2>Auction Ends in {timeRemaining}</h2>
+                Auction Ends in {timeRemaining}
               </div>
 
               <div className="by-user-type-interface">
                 {isOwner ? (
-                  <OwnerAuctionInterface bids={property.auction.bids} />
+                  <OwnerAuctionInterface
+                    // id={property.auction.propertyOnSale}
+                    // bids={property.auction.bids}
+                    property={property}
+                  />
                 ) : (
                   <BuyerAuctionInterface bids={property.auction.bids} />
                 )}

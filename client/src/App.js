@@ -12,6 +12,8 @@ import Profile from './components/profile.component';
 import ByPropertyBids from './components/byPropertyBids.component';
 import MakeABid from './components/makeABid.component';
 import Logout from './components/logout.component';
+import AboutPage from './components/aboutPage.component';
+import editListingTerms from './components/editListingTerms.component';
 
 // import Profile from '../profile.component';
 // import Logout from './components/logout.component';
@@ -45,6 +47,7 @@ function App() {
           <Route exact path="/" component={Landing} />
           <Route exact path="/profile" component={Profile} />
           <Route exact path="/listproperty" component={ListProperty} />
+          <Route exact path="/about" component={AboutPage} />
           <Route
             exact
             path="/properties/:id"
@@ -53,6 +56,11 @@ function App() {
           />
           <Route exact path="/properties/:id/bids" component={ByPropertyBids} />
           <Route exact path="/properties/:id/makeabid" component={MakeABid} />
+          <Route
+            exact
+            path="/properties/:id/edit"
+            component={editListingTerms}
+          />
           <Route
             exact
             path="/logout"
@@ -65,5 +73,5 @@ function App() {
     </div>
   );
 }
-
+//Q: Was it to pass isAuthenticated state to each Route and then to components that it loads that the component= syntax was changed to props => render syntax?
 export default App;

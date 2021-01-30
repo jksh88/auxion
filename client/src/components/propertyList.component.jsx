@@ -7,7 +7,7 @@ const PropertyList = () => {
   const [properties, setProperties] = useState([]);
   useEffect(() => {
     return axios
-      .get('http://localhost:8000/properties')
+      .get(`${REACT_APP_SERVER_URL}/properties`)
       .then((res) => {
         console.log('RESPONSE DATA: ', res.data);
 

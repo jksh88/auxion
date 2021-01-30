@@ -5,9 +5,44 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+form {
+  background-color: #1c2930;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 414px;
+  margin: 0 auto;
+  margin-top: 8vw;
+  justify-content: space-around;
+  border: 1px solid grey;
+  border-radius: 1rem;
+  padding: 3rem;
+}
+
+form input:not([type='radio']),
+form textarea {
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  border: none;
+}
+
+form label {
+  display: block;
+  font-size: smaller;
+  margin-bottom: 0.3rem;
+}
+
+form textarea {
+  resize: vertical;
 }

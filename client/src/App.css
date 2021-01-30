@@ -6,13 +6,9 @@
   box-sizing: border-box;
 }
 
-html {
-  background-color: #ecf9ff;
-}
-
 body {
   color: #272727;
-  font-family: 'Quicksand', serif;
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 400;
   padding: 1rem;
@@ -25,4 +21,22 @@ a {
 
 li {
   list-style-type: none;
+}
+
+button {
+  background: dodgerblue;
+  padding: 12px 14px; /*This is material UI dimenstion for buttons. Trying to mimic material UI style here*/
+  color: white;
+  font-weight: bold;
+  border-radius: 6px; /*For non-square shaped elements, don't do percent. Always use rem or px*/
+  border: none; /*Reset default border. Border is there by html default*/
+}
+
+.button-secondary {
+  background: white;
+  padding: 12px 14px; /*This is material UI dimenstion for buttons. Trying to mimic material UI style here*/
+  color: dodgerblue;
+  font-weight: bold;
+  border-radius: 6px; /*For non-square shaped elements, don't do percent. Always use rem or px*/
+  border: 1px solid dodgerblue; /*Reset default border. Border is there by html default*/
 }
