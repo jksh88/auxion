@@ -1,0 +1,9 @@
+.available {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 1rem;
+}
+
+.available > div {
+  display: flex;
+}

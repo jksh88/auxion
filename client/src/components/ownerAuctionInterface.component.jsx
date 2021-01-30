@@ -11,7 +11,8 @@ const OwnerAuctionInterface = (props) => {
         onClick={() =>
           history.push({
             pathname: `${history.location.pathname}/bids`,
-            state: props.bids,
+            // state: props.bids,
+            state: props.property?.auction.bids,
           })
         }
       >
@@ -24,7 +25,7 @@ const OwnerAuctionInterface = (props) => {
           history.push({
             pathname: `${history.location.pathname}/edit`,
             // state: props.auction,
-            //TODO: figure out how to pre-populate existing listing terms on edit form
+            //TODO: figure out how to populate existing listing terms on form
           })
         }
       >

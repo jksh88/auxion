@@ -1,3 +1,10 @@
+.auction-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
 .address {
   color: black;
   text-align: center;
@@ -13,13 +20,6 @@
 .one-picture {
   max-height: 400px;
   max-width: 400px;
-  padding: 20px;
-}
-
-.auction-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 20px;
 }
 

@@ -39,6 +39,7 @@ const ByPropertyBids = (props) => {
   //     currency: 'USD',
   //     maximumSignificantDigits: 6,
   //   }).format(amount);
+  console.log('PROPSSS: ', props);
   const data = props.location.state.map((bid) => ({
     ...bid,
     closingDate: convertDate(bid.closingDate),

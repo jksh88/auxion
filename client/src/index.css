@@ -28,7 +28,7 @@ form {
   padding: 3rem;
 }
 
-form input,
+form input:not([type='radio']),
 form textarea {
   width: 100%;
   padding: 6px 8px;

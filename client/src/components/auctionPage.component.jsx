@@ -102,8 +102,9 @@ const AuctionPage = (props) => {
               <div className="by-user-type-interface">
                 {isOwner ? (
                   <OwnerAuctionInterface
-                    id={property.auction.propertyOnSale}
-                    bids={property.auction.bids}
+                    // id={property.auction.propertyOnSale}
+                    // bids={property.auction.bids}
+                    property={property}
                   />
                 ) : (
                   <BuyerAuctionInterface bids={property.auction.bids} />

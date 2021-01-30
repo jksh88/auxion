@@ -192,7 +192,7 @@ router.patch('/properties/:id/edit', auth, async (req, res) => {
     res.status(401).send('Unauthorized');
     return;
   }
-  if (!(description || available != null || images)) {
+  if (!(description || available != null || images || auctionEndTime)) {
     res.status(400).send('Some fields missing');
     return;
   }
@@ -205,6 +205,9 @@ router.patch('/properties/:id/edit', auth, async (req, res) => {
   }
   if (images != null) {
     fieldsToUpdate.images = images;
+  }
+  if (auctionEndTime != null) {
+    fieldsToUpdate.auctionEndTime = auctionEndTime;
   }
 
   const property = await PropertyModel.findByIdAndUpdate(id, fieldsToUpdate, {
