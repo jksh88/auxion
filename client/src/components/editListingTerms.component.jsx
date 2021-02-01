@@ -17,6 +17,7 @@ const EditListingTerms = (props) => {
 
   const { id } = props.match.params;
   const { history } = props;
+
   useEffect(() => {
     axios
       .get(`${REACT_APP_SERVER_URL}/properties/${id}`, {
@@ -62,7 +63,7 @@ const EditListingTerms = (props) => {
     const formData = new FormData();
     formData.append('description', JSON.stringify(description));
     formData.append('available', JSON.stringify(available));
-    // formData.append('auctionEndTime', JSON.stringify(auctionEndTime));
+    formData.append('auctionEndTime', JSON.stringify(auctionEndTime));
 
     files.forEach((file) => formData.append('file[]', file, file.name));
     //https://developer.mozilla.org/en-US/docs/Web/API/FormData/append

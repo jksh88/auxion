@@ -14,7 +14,7 @@ router.post('/listproperty', auth, async (req, res) => {
     description: JSON.parse(description),
     images: req.files.map(
       (file) => `http://localhost:8000/images/${file.filename}`
-    ), //req.files is an array of objects. We need array of strings with strings being the names of the files
+    ), //req.files is an array of objects. I need array of strings with strings being the names of the files
     owner: req.user.id,
   });
   // console.log('REQ.FILES: ', req.files);
@@ -124,7 +124,7 @@ router.put('/properties/:id/bid', auth, async (req, res) => {
       auction.bids[idx] = bid;
     }
 
-    //After the bid is updated, we can find the maximum bid.
+    //After the bid is updated, I can find the maximum bid.
     auction.currentHighestBid = auction.bids.reduce(
       (acc, cur) => (cur.purchasePrice > acc ? cur.purchasePrice : acc),
       0
@@ -177,7 +177,7 @@ router.get('/properties/:id/bids', auth, async (req, res) => {
 });
 
 router.patch('/properties/:id/edit', auth, async (req, res) => {
-  const { description, available, images } = req.body;
+  const { description, available, images, auctionEndTime } = req.body;
   const id = req.params.id;
   if (!req.user.properties.some((property) => property._id.toString() === id)) {
     console.log('REQ.USER**: ', req.user);
@@ -185,10 +185,10 @@ router.patch('/properties/:id/edit', auth, async (req, res) => {
     //TODO: How was poperties populated for user without manually populating?
     //TODO: Why is password not shown on backend terminal?
 
-    //TDODO: Why are we using some??
+    //TDODO: Forgot. Why use some again??
     //TODO: Is it not property._id? Update: I changed it to _id and now it works. How did it work before when we tested with just id?
 
-    console.log('ID**: ', id);
+    console.log('ID** at EDIT ROUTER: ', id);
     res.status(401).send('Unauthorized');
     return;
   }
@@ -196,23 +196,38 @@ router.patch('/properties/:id/edit', auth, async (req, res) => {
     res.status(400).send('Some fields missing');
     return;
   }
-  const fieldsToUpdate = {};
+  const propertyFieldsToUpdate = {};
+  const auctionFieldsToUpdate = {};
   if (description != null) {
-    fieldsToUpdate.description = description;
+    propertyFieldsToUpdate.description = description;
   }
   if (available != null) {
-    fieldsToUpdate.available = available;
+    propertyFieldsToUpdate.available = available;
   }
   if (images != null) {
-    fieldsToUpdate.images = images;
+    propertyFieldsToUpdate.images = images;
   }
   if (auctionEndTime != null) {
-    fieldsToUpdate.auctionEndTime = auctionEndTime;
+    auctionFieldsToUpdate.auctionEndTime = auctionEndTime;
   }
 
-  const property = await PropertyModel.findByIdAndUpdate(id, fieldsToUpdate, {
-    new: true,
-  });
+  const property = await PropertyModel.findByIdAndUpdate(
+    id,
+    propertyFieldsToUpdate,
+    {
+      new: true,
+    }
+  );
+
+  const auctionId = property.auction.toString();
+  console.log('AUCTIONID: ', auctionId);
+  const auction = await AuctionModel.findByIdAndUpdate(
+    auctionId,
+    auctionFieldsToUpdate,
+    {
+      new: true,
+    }
+  );
   res.status(200).send(property);
 });
 
