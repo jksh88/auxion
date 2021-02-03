@@ -29,6 +29,7 @@ const AuctionPage = (props) => {
             ...curState.auction,
             currentHighestBid: auction.currentHighestBid,
           },
+          description: curState.description,
         };
       });
     }
@@ -67,12 +68,6 @@ const AuctionPage = (props) => {
   }, []);
   //If I use some variable from outer scope(like 'id' here) in useEffect, that varialbe needs to go inside the array after the useEffect, because it's a presumption of React that I might have have forgottent it. It's because my state can be dependent on the value of that variable. This callback in useEffect will run everytime and only when the id changes.
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setTimeRemaining();
-  //   });
-  // });
-
   const openModal = () => {
     setIsOpen(true);
   };
@@ -81,11 +76,10 @@ const AuctionPage = (props) => {
     <div className="auction-page">
       {property && (
         <>
-          {/* <section className="address"> */}
           <div>
-            <h1>{`Auction page for ${property.address?.street}, ${property.address?.city}, ${property.address?.state}`}</h1>
+            <h1>{`${property.address?.street}, ${property.address?.city}, ${property.address?.state}`}</h1>
+            <div className="description">{`"${property.description}"`}</div>
           </div>
-          {/* </section> */}
           <section className="picture-and-auction-info">
             <div className="one-picture" onClick={openModal}>
               <img src={property.images[0]} />
@@ -107,7 +101,10 @@ const AuctionPage = (props) => {
                     property={property}
                   />
                 ) : (
-                  <BuyerAuctionInterface bids={property.auction.bids} />
+                  <BuyerAuctionInterface
+                    address={property.address}
+                    bids={property.auction.bids}
+                  />
                 )}
               </div>
             </div>

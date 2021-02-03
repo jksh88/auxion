@@ -50,6 +50,7 @@ const ByPropertyBids = (props) => {
 
   return (
     <div className="by-property-bids">
+      <div className="bids-title">{`< All ${props.location.state.length} Bids You Have Received To Date >`}</div>
       <TableContainer columns={columns} data={data} />
     </div>
   );

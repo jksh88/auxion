@@ -23,3 +23,4 @@ const BuyerAuctionInterface = (props) => {
 };
 
 export default BuyerAuctionInterface;
+//Q: How to pass address props from parent to the makebid child? Not from route but from parent in this case? Make a bid for {address}

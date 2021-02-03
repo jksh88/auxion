@@ -5,6 +5,7 @@ import './ownerAuctionInterface.styles.css';
 const OwnerAuctionInterface = (props) => {
   const history = useHistory();
   console.log(history);
+  console.log('PROPS.PROPERTY AT OAI: ', props.property);
   return (
     <div className="owner-auction-interface">
       <button

@@ -115,9 +115,9 @@ router.put('/properties/:id/bid', auth, async (req, res) => {
     );
     // console.log('IDX: ', idx);
     //If index is not found, that means the bidder never placed a bid before for this property.
-    //Therefore, I am pushing his bid inot the bids array.
-    //I check if the bidder has bidden for this property before, because I only keep one bid from each bidder for this property.
-    //Only the last bid from a particular bidder is kept and other discarded.
+    //Therefore, I am pushing his bid into the bids array.
+    //I check if the bidder has bidden for this property before, because I only keep (last) one bid from each bidder for this property.
+    //Only the last bid from a particular bidder is kept and others discarded.
     if (idx === -1) {
       auction.bids.push(bid);
     } else {
