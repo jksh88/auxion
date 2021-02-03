@@ -3,6 +3,8 @@ import axios from 'axios';
 import PropertyCard from './propertyCard.component';
 import './propertyList.styles.css';
 
+const { REACT_APP_SERVER_URL } = process.env;
+
 const PropertyList = () => {
   const [properties, setProperties] = useState([]);
   useEffect(() => {
