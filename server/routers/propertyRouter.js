@@ -199,10 +199,11 @@ router.patch('/properties/:id/edit', auth, async (req, res) => {
   const propertyFieldsToUpdate = {};
   const auctionFieldsToUpdate = {};
   if (description != null) {
-    propertyFieldsToUpdate.description = description;
+    propertyFieldsToUpdate.description = JSON.parse(description);
+    //I need to wrap the front end string data in JSON.parse because the data comes in formData. FormData natively works with browsers, which means if I use form inside a broswer, this form by default will try to send form data. When I didn't do the JSON.parse like this on the backend, prepopulated data in edit forms on front end were escaped with backslash.
   }
   if (available != null) {
-    propertyFieldsToUpdate.available = available;
+    propertyFieldsToUpdate.available = JSON.parse(available);
   }
   if (images != null) {
     propertyFieldsToUpdate.images = images;

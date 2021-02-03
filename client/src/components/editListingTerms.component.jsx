@@ -17,6 +17,7 @@ const EditListingTerms = (props) => {
 
   const { id } = props.match.params;
   const { history } = props;
+  console.log('HISTORY AT EDIT: ', history);
 
   useEffect(() => {
     axios
@@ -53,7 +54,9 @@ const EditListingTerms = (props) => {
 
   const prePopulateForm = (property) => {
     setProperty(property);
+
     setDescription(property.description);
+
     setAvailable(property.available);
     setAuctionEndTime(property.auction.auctionEndTime.slice(0, 10));
   };
@@ -85,7 +88,7 @@ const EditListingTerms = (props) => {
 
       console.log('_ID HERE: ', _id);
       // console.log('HISTORY HERE: ', history);
-      history.push(`properties/${_id}`);
+      history.push(`/properties/${_id}`); //Don't forget '/' before url //Q: Why does this run twice? Look at url address on broswer. A: It's not that it's running twice. If I forget '/' before the pathname, it apends the url to whatever was there before, which makes it look like it's run twice.
     } catch (err) {
       console.log(err);
     }
