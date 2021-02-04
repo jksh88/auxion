@@ -13,7 +13,7 @@ router.post('/listproperty', auth, async (req, res) => {
     address: JSON.parse(address),
     description: JSON.parse(description),
     images: req.files.map(
-      (file) => `http://localhost:8000/images/${file.filename}`
+      (file) => `${process.env.OWN_URL}/images/${file.filename}`
     ), //req.files is an array of objects. I need array of strings with strings being the names of the files
     owner: req.user.id,
   });
@@ -177,8 +177,18 @@ router.get('/properties/:id/bids', auth, async (req, res) => {
 });
 
 router.patch('/properties/:id/edit', auth, async (req, res) => {
-  const { description, available, images, auctionEndTime } = req.body;
+  const { description, available, auctionEndTime } = req.body;
   const id = req.params.id;
+  const images = req.files.map(
+    (file) => `${process.env.OWN_URL}/images/${file.filename}`
+  );
+
+  //Remember it's what is coming from front-end through multer is not called "images". They are called "files". Look at editListingTerms or ListProperty components on front end. They are "files"
+  //Multer doesn't know they are saved as "images" on the backend.
+  //req.files?map doesn't work on the backend. Backend doesn't recognize this conditional chaining syntax yet.
+  //Actually, no need to guard files because map works on empty array too.
+  //formData ALWAYS creates and sends through to backend an array even if there's no files in the array
+  console.log('IMAGES FROM FE THRU MULTER: ', images);
   if (!req.user.properties.some((property) => property._id.toString() === id)) {
     console.log('REQ.USER**: ', req.user);
     //TODO: this user came from auth middleware right?
@@ -192,7 +202,7 @@ router.patch('/properties/:id/edit', auth, async (req, res) => {
     res.status(401).send('Unauthorized');
     return;
   }
-  if (!(description || available != null || images || auctionEndTime)) {
+  if (!(description || available != null || auctionEndTime)) {
     res.status(400).send('Some fields missing');
     return;
   }
@@ -206,8 +216,9 @@ router.patch('/properties/:id/edit', auth, async (req, res) => {
     propertyFieldsToUpdate.available = JSON.parse(available);
   }
   if (images != null) {
-    propertyFieldsToUpdate.images = images;
+    propertyFieldsToUpdate.$push = { images };
   }
+  //If I don't push but do "propertyFieldsToUpdate.images = images", then the new photos array will just replace existing array. So, to add iamges, push.
   if (auctionEndTime != null) {
     auctionFieldsToUpdate.auctionEndTime = auctionEndTime;
   }
