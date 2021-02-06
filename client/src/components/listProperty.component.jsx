@@ -72,12 +72,7 @@ const ListProperty = (props) => {
       console.log(err);
     }
   };
-  //   fetch(`http://localhost:8000/listproperty'`, {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'multipart/form-data' },
-  //     body: formData,
-  //   });
-  // };
+
   return (
     // <div>
     //   <h2>Property Listing Form</h2>

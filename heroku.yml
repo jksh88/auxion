@@ -1,0 +1,4 @@
+build:
+  docker:
+    client-app: client
+    server-app: server

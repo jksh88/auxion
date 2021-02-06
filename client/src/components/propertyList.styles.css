@@ -3,7 +3,7 @@
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  grid-template-columns: repeat(auto-fit, minmax(264px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(264px, 300px));
   grid-auto-flow: dense;
   gap: 28px;
 }
