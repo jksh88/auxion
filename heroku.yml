@@ -1,4 +1,4 @@
 build:
   docker:
-    client-app: client
-    server-app: server
+    client-app: ./client
+    server-app: ./server
