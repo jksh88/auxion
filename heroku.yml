@@ -1,4 +1,0 @@
-build:
-  docker:
-    client-app: ./client/Dockerfile
-    server-app: ./server/Dockerfile

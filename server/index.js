@@ -20,6 +20,8 @@ mongoose.connect(process.env.DB_URL, {
   useUnifiedTopology: true,
 });
 
-server.listen(8000, () => console.log('App listening on port 8000'));
+server.listen(process.env.PORT || 8000, () =>
+  console.log('Server listening now..')
+);
 
 //Index.js cannot export anything to any other file because it is the root.
