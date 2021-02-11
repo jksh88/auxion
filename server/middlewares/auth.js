@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/userModel');
-const SECRET_KEY = process.env.SECRET_KEY || 'otherworldly place to be';
+const SECRET_KEY = process.env.JWT_SECRET_PHRASE;
 
 const auth = async (req, res, next) => {
   try {

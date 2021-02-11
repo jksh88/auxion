@@ -43,6 +43,7 @@ const Register = (props) => {
       const { token, _id } = parsedUser;
       localStorage.setItem('accessToken', token);
       localStorage.setItem('userId', _id);
+      props.handleAuth(true); //set isAuthenticated to true using handleAuth function passed down from App component
       history.push('/');
     }
   };

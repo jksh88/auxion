@@ -14,24 +14,19 @@ const PropertyCard = ({ address, images, id }) => {
 
   return (
     <div className="property-card">
-      <ul className="cards">
-        <li className="cards_item" style={{ minWidth: '20rem' }}>
-          <div className="card">
-            <div className="card_image">
-              <img src={images[0]} alt="property images" />
-              <div className="card_content">
-                <h2 className="address">{address.street}</h2>
-                <p className="card_text">
-                  Click the button to see auction status and place your bid
-                </p>
-                <button className="btn" onClick={handleClick}>
-                  Details
-                </button>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
+      <div className="card">
+        <div className="card-image">
+          <img src={images[0]} alt="property images" />
+        </div>
+        <div className="card-content">
+          <h2 className="address">{address.street}</h2>
+          <h2 className="address">{address.city}</h2>
+          <h2 className="address">{address.state}</h2>
+          <button className="btn" onClick={handleClick}>
+            See details
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

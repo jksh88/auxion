@@ -1,65 +1,44 @@
-import PersonAdd from '@material-ui/icons/PersonAdd';
-import Account from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
+import './navbar.styles.css';
 
 const Navbar = ({ isAuthenticated }) => {
   return (
-    <div
-      className="Navbar"
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
-    >
-      <div
-        className="nav-left"
-        style={{ width: '10%', display: 'flex', justifyContent: 'flex-end' }}
-      >
+    <div className="navbar">
+      <div className="nav-left">
         <Link to="/">
-          <h1 className="logo">LOGO</h1>
+          <img className="logo" src="/auxion_logo3.png" alt="logo" />
         </Link>
       </div>
-      <div className="nav-center">
+      <div className="list-area">
         <Link to="/listproperty">
-          <button className="list-button">LIST MY PROPERTY</button>
+          <div className="list-text">
+            CLICK &
+            <br /> LIST
+          </div>
         </Link>
       </div>
-      <div
-        className="nav-right"
-        style={{
-          width: '10%',
-          display: 'flex',
-          justifyContent: 'space-around',
-          marginRight: '10%',
-        }}
-      >
-        {isAuthenticated ? (
-          <>
-            <li>
-              <Link to="/profile">Profile</Link>
-            </li>
-            <li>
-              <Link to="/logout">Logout</Link>
-            </li>
-          </>
-        ) : (
-          <>
-            <li>
-              <Link to="/register">Register</Link>
-            </li>
-            <li>
-              <Link to="/Login">Login</Link>
-            </li>
-          </>
-        )}
-        {/* <Link to="/register">
-          <PersonAdd className="nav-items" />
-        </Link>
-        <Link to="/login">
-          <Account className="nav-items" />
-        </Link> */}
+      <div className="about">
+        <Link to="/about">ABOUT</Link>
       </div>
+      {isAuthenticated ? (
+        <>
+          <div>
+            <Link to="/profile">PROFILE</Link>
+          </div>
+          <div>
+            <Link to="/logout">LOGOUT</Link>
+          </div>
+        </>
+      ) : (
+        <>
+          <div>
+            <Link to="/register">REGISTER</Link>
+          </div>
+          <div>
+            <Link to="/Login">LOGIN</Link>
+          </div>
+        </>
+      )}
     </div>
   );
 };

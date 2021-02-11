@@ -1,0 +1,35 @@
+.my-properties {
+  display: grid;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  /* grid-template-columns: repeat(autofill, 1fr); */
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(264px, 300px)
+  ); /*the max value should not be 1fr. If it is, then it takes up the whole page width as a giant 1fr!*/
+  grid-auto-flow: dense;
+  gap: 28px;
+}
+
+@keyframes movedown {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(10px);
+  }
+
+  60% {
+    transform: translateY(0);
+  }
+}
+
+.arrow-downward {
+  color: #808080;
+  animation-name: movedown;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-delay: 1s;
+}

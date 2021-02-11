@@ -1,0 +1,6 @@
+.owner-auction-interface {
+  display: flex;
+  padding: 2rem 0;
+  justify-content: space-around;
+  /* align-items: center; */
+}

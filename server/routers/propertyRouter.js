@@ -4,8 +4,8 @@ const router = new express.Router();
 const auth = require('../middlewares/auth');
 const UserModel = require('../models/userModel');
 const AuctionModel = require('../models/auctionModel');
-
-// const multer = require('multer');
+const { io } = require('../server');
+// console.log('WHAT IS IO: ', io);
 
 router.post('/listproperty', auth, async (req, res) => {
   const { address, description, startPrice, auctionEndTime } = req.body;
@@ -13,8 +13,8 @@ router.post('/listproperty', auth, async (req, res) => {
     address: JSON.parse(address),
     description: JSON.parse(description),
     images: req.files.map(
-      (file) => `http://localhost:8000/images/${file.filename}`
-    ), //req.files is an array of objects. We need array of strings with strings being the names of the files
+      (file) => `${process.env.OWN_URL}/images/${file.filename}`
+    ), //req.files is an array of objects. I need array of strings with strings being the names of the files
     owner: req.user.id,
   });
   // console.log('REQ.FILES: ', req.files);
@@ -108,21 +108,27 @@ router.put('/properties/:id/bid', auth, async (req, res) => {
       });
       return;
     }
-    auction.currentHighestBid =
-      auction.currentHighestBid < purchasePrice
-        ? purchasePrice
-        : auction.currentHighestBid;
 
+    //I am finding the index of the bidder in the bids array of the auction in the property(see property schema).
     const idx = auction.bids.findIndex(
       (bid) => bid.bidder.toString() === bidder.toString()
     );
-    console.log('IDX: ', idx);
-
+    // console.log('IDX: ', idx);
+    //If index is not found, that means the bidder never placed a bid before for this property.
+    //Therefore, I am pushing his bid into the bids array.
+    //I check if the bidder has bidden for this property before, because I only keep (last) one bid from each bidder for this property.
+    //Only the last bid from a particular bidder is kept and others discarded.
     if (idx === -1) {
       auction.bids.push(bid);
     } else {
       auction.bids[idx] = bid;
     }
+
+    //After the bid is updated, I can find the maximum bid.
+    auction.currentHighestBid = auction.bids.reduce(
+      (acc, cur) => (cur.purchasePrice > acc ? cur.purchasePrice : acc),
+      0
+    );
 
     //TODO: replace push with set from auction.{set:}
     //If there is no bid currently for the user, I need to create one, but if there is one already, I need to replace it witht the new bid
@@ -137,12 +143,18 @@ router.put('/properties/:id/bid', auth, async (req, res) => {
     //   ...auction,
     //   bids: bids.filter((bid) => bid.bidder.toString() === req.user.id),
     // };
-    res.status(200).send({
+    const userOwnBids = {
       ...auction.toObject(),
       bids: auction.bids.filter(
         (bid) => bid.bidder.toString() === bidder.toString()
       ),
-    });
+    };
+    // io.on('connection', (socket) => {
+    //   socket.emit('bid', JSON.stringify(userOwnBids));
+
+    // });
+    io.sockets.emit('bid', JSON.stringify(userOwnBids));
+    res.status(200).send(userOwnBids); //This is so that backend only sends bids that pertain to the particular user and he can't see other people's bids
   } catch (err) {
     console.log(err);
     res.status(500).send(err);
@@ -164,31 +176,70 @@ router.get('/properties/:id/bids', auth, async (req, res) => {
   }
 });
 
-router.patch('/properties/:id', auth, async (req, res) => {
-  const { description, available, images } = req.body;
+router.patch('/properties/:id/edit', auth, async (req, res) => {
+  const { description, available, auctionEndTime } = req.body;
   const id = req.params.id;
-  if (!req.user.properties.some((property) => property.id.toString() === id)) {
+  const images = req.files.map(
+    (file) => `${process.env.OWN_URL}/images/${file.filename}`
+  );
+
+  //Remember it's what is coming from front-end through multer is not called "images". They are called "files". Look at editListingTerms or ListProperty components on front end. They are "files"
+  //Multer doesn't know they are saved as "images" on the backend.
+  //req.files?map doesn't work on the backend. Backend doesn't recognize this conditional chaining syntax yet.
+  //Actually, no need to guard files because map works on empty array too.
+  //formData ALWAYS creates and sends through to backend an array even if there's no files in the array
+  console.log('IMAGES FROM FE THRU MULTER: ', images);
+  if (!req.user.properties.some((property) => property._id.toString() === id)) {
+    console.log('REQ.USER**: ', req.user);
+    //TODO: this user came from auth middleware right?
+    //TODO: How was poperties populated for user without manually populating?
+    //TODO: Why is password not shown on backend terminal?
+
+    //TDODO: Forgot. Why use some again??
+    //TODO: Is it not property._id? Update: I changed it to _id and now it works. How did it work before when we tested with just id?
+
+    console.log('ID** at EDIT ROUTER: ', id);
     res.status(401).send('Unauthorized');
     return;
   }
-  if (!(description || available != null || images)) {
+  if (!(description || available != null || auctionEndTime)) {
     res.status(400).send('Some fields missing');
     return;
   }
-  const fieldsToUpdate = {};
+  const propertyFieldsToUpdate = {};
+  const auctionFieldsToUpdate = {};
   if (description != null) {
-    fieldsToUpdate.description = description;
+    propertyFieldsToUpdate.description = JSON.parse(description);
+    //I need to wrap the front end string data in JSON.parse because the data comes in formData. FormData natively works with browsers, which means if I use form inside a broswer, this form by default will try to send form data. When I didn't do the JSON.parse like this on the backend, prepopulated data in edit forms on front end were escaped with backslash.
   }
   if (available != null) {
-    fieldsToUpdate.available = available;
+    propertyFieldsToUpdate.available = JSON.parse(available);
   }
   if (images != null) {
-    fieldsToUpdate.images = images;
+    propertyFieldsToUpdate.$push = { images };
+  }
+  //If I don't push but do "propertyFieldsToUpdate.images = images", then the new photos array will just replace existing array. So, to add iamges, push.
+  if (auctionEndTime != null) {
+    auctionFieldsToUpdate.auctionEndTime = auctionEndTime;
   }
 
-  const property = await PropertyModel.findByIdAndUpdate(id, fieldsToUpdate, {
-    new: true,
-  });
+  const property = await PropertyModel.findByIdAndUpdate(
+    id,
+    propertyFieldsToUpdate,
+    {
+      new: true,
+    }
+  );
+
+  const auctionId = property.auction.toString();
+  console.log('AUCTIONID: ', auctionId);
+  const auction = await AuctionModel.findByIdAndUpdate(
+    auctionId,
+    auctionFieldsToUpdate,
+    {
+      new: true,
+    }
+  );
   res.status(200).send(property);
 });
 

@@ -11,7 +11,7 @@ const bidSchema = new Schema({
   deposit: { type: Number, required: true },
   dueDiligence: { type: Number, required: true },
   closingDate: { type: Date, required: true },
-  createdAt: { type: Date, default: new Date().toISOString() },
+  createdAt: { type: Date, default: () => new Date().toISOString() }, //For default, do not call the function(i.e., no parenthesis at the end of 'toISOSstring')
 });
 
 const auctionSchema = new Schema({
@@ -21,7 +21,7 @@ const auctionSchema = new Schema({
     required: true,
   },
   bids: [bidSchema],
-  auctionStartTime: { type: Date, default: new Date().toISOString() },
+  auctionStartTime: { type: Date, default: () => new Date().toISOString() },
   auctionEndTime: { type: Date },
   propertyOnSale: {
     type: Schema.Types.ObjectId,

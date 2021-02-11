@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const MakeABid = (props) => {
-  // console.log('PROPS.LOCATION: ', props.location);
+  // console.table('PROPS.LOCATION: ', props.location);
   const [bid] = props.location.state;
   const initialState = {
     purchasePrice: bid?.purchasePrice || 0, //because bid can be undefined, I need to use optional(or conditional) chaining.
@@ -50,22 +50,7 @@ const MakeABid = (props) => {
   return (
     <div>
       <h2>Make a bid</h2>
-      <form
-        className="form"
-        onSubmit={handleSubmit}
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '30vw',
-          margin: '0 auto',
-          marginTop: '8vw',
-          justifyContent: 'space-around',
-          height: '35vw',
-          border: '1px solid grey',
-          borderRadius: '1rem',
-          padding: '3rem',
-        }}
-      >
+      <form className="form" onSubmit={handleSubmit}>
         <div>
           <label>
             Purchase Price
@@ -75,13 +60,6 @@ const MakeABid = (props) => {
               placeholder="Put in your purchase price"
               value={state.purchasePrice}
               onChange={handleChange}
-              style={{
-                width: '100%',
-                letterSpacing: '.2rem',
-                height: '2rem',
-                border: 'none',
-                borderBottom: '1px solid grey',
-              }}
             />
           </label>
         </div>
