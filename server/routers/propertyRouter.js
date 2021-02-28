@@ -9,6 +9,8 @@ const { io } = require('../server');
 
 router.post('/listproperty', auth, async (req, res) => {
   const { address, description, startPrice, auctionEndTime } = req.body;
+  //newTODO: req.files are files coming from multer from front end. They need to be saved inot Cloudinary
+  //
   const property = new PropertyModel({
     address: JSON.parse(address),
     description: JSON.parse(description),

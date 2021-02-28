@@ -28,6 +28,7 @@ const AuctionPage = (props) => {
           auction: {
             ...curState.auction,
             currentHighestBid: auction.currentHighestBid,
+            bids: auction.bids,
           },
           description: curState.description,
         };
@@ -36,6 +37,7 @@ const AuctionPage = (props) => {
     console.log(payload);
     console.log('Socket connection established');
   });
+  console.log('PROPERTY: ', property);
   useEffect(() => {
     const socket = io(process.env.REACT_APP_SERVER_URL, {
       transports: ['websocket'],
