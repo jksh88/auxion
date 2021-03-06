@@ -5,20 +5,29 @@ const auth = require('../middlewares/auth');
 const UserModel = require('../models/userModel');
 const AuctionModel = require('../models/auctionModel');
 const { io } = require('../server');
+const s3uploader = require('./s3uploader');
 // console.log('WHAT IS IO: ', io);
 
 router.post('/listproperty', auth, async (req, res) => {
   const { address, description, startPrice, auctionEndTime } = req.body;
   //newTODO: req.files are files coming from multer from front end. They need to be saved inot Cloudinary
   //
+  // const images = req.files (It's already made available by multer)
+  // Create connection to S3 in another file and export upload pictures files(array of pics). The only role of this file is to provide upoload function to line15
+  //line 22 needs to change to path to my bucket/filename
+
+  const s3files = await Promise.all(req.files.map(s3uploader));
+  //s3 itself returns promise and Promise.all expects an array of promises as its argument. s3files will await the resolution of all the promises
+  //s3files is array of objects.
+  console.log('S3FILES: ', s3files);
   const property = new PropertyModel({
     address: JSON.parse(address),
     description: JSON.parse(description),
-    images: req.files.map(
-      (file) => `${process.env.OWN_URL}/images/${file.filename}`
-    ), //req.files is an array of objects. I need array of strings with strings being the names of the files
+    images: s3files.map((file) => file.Location), //req.files is an array of objects. I need array of strings with strings being the names of the files
     owner: req.user.id,
   });
+  //The images of the newly created property document now needs to look through the s3files that were provided by AWS, and no more to req.files provided by multer from front-end
+
   // console.log('REQ.FILES: ', req.files);
   const auction = new AuctionModel({
     startPrice: parseInt(JSON.parse(startPrice)),
@@ -133,7 +142,7 @@ router.put('/properties/:id/bid', auth, async (req, res) => {
     );
 
     //TODO: replace push with set from auction.{set:}
-    //If there is no bid currently for the user, I need to create one, but if there is one already, I need to replace it witht the new bid
+    //If there is no bid currently for the user, I need to create one, but if there is one already, I need to replace it with the new bid
     //if (auction.bids.findIndexOf() === -1)
     await auction.save();
     // console.log('AUCTION: ', auction);
