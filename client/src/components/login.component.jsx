@@ -18,7 +18,8 @@ const Login = (props) => {
   // console.log('FROMMMM ', from);
 
   const id = new URLSearchParams(history.location.search).get('from');
-
+  //https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+  //https://reactrouter.com/core/api/history
   const { email, password } = state;
 
   const handleChange = (evt) => {

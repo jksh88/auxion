@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import reactRouterDom from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
+import './register.styles.css';
 
 const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -61,13 +61,6 @@ const Register = (props) => {
             placeholder="firstname lastname"
             value={state.name}
             onChange={handleChange}
-            style={{
-              width: '100%',
-              letterSpacing: '.2rem',
-              height: '2rem',
-              border: 'none',
-              borderBottom: '1px solid grey',
-            }}
           />
         </div>
         <div className="field">
@@ -78,31 +71,16 @@ const Register = (props) => {
             placeholder="email"
             value={state.email}
             onChange={handleChange}
-            style={{
-              width: '100%',
-              letterSpacing: '.2rem',
-              height: '2rem',
-              border: 'none',
-              borderBottom: '1px solid grey',
-            }}
           />
         </div>
         <div className="field">
           <label>Password</label>
           <input
-            type="text"
+            type="password"
             name="password"
             placeholder="password"
             value={state.password}
             onChange={handleChange}
-            style={{
-              width: '100%',
-              letterSpacing: '.3rem',
-              height: '2rem',
-              border: 'none',
-              borderBottom: '1px solid grey',
-              marginBottom: '1.5rem',
-            }}
           />
         </div>
         <button>SIGN ME UP</button>
