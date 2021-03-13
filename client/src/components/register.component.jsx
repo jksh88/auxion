@@ -52,22 +52,7 @@ const Register = (props) => {
     <div className="register">
       <h2>I do not have an account</h2>
       <span>Sign up with your email and password</span>
-      <form
-        className="form"
-        onSubmit={handleSubmit}
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '30vw',
-          margin: '0 auto',
-          marginTop: '8vw',
-          justifyContent: 'space-around',
-          height: '35vw',
-          border: '1px solid grey',
-          borderRadius: '1rem',
-          padding: '3rem',
-        }}
-      >
+      <form className="form" onSubmit={handleSubmit}>
         <div className="field">
           <label>Name</label>
           <input
@@ -116,6 +101,7 @@ const Register = (props) => {
               height: '2rem',
               border: 'none',
               borderBottom: '1px solid grey',
+              marginBottom: '1.5rem',
             }}
           />
         </div>

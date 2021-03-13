@@ -1,5 +1,6 @@
 .property-list {
   display: grid;
+  justify-content: center;
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
