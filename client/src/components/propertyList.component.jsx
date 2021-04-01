@@ -20,11 +20,11 @@ const PropertyList = () => {
       })
       .catch((err) => console.log(err));
   }, []);
-  if (!isLoading) {
+  if (isLoading) {
     return <Loading />;
   }
   return (
-    <div className="property-list">
+    <div className="propertylist">
       {properties.map(({ _id, ...otherProps }) => (
         <PropertyCard key={_id} {...otherProps} id={_id} />
       ))}

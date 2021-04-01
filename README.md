@@ -7,4 +7,4 @@ Save the commission.
 
 Tech stack: React, Express, MongoDB/Mongoose, Node, AWS, Socket.IO
 
-Live demo(Takes a few seconds to load given free tier plan): https://60246f548f4cb066c8e1c939--gifted-williams-861d6e.netlify.app/
+Live demo(Takes a few seconds to load given free tier plan): https://gifted-williams-861d6e.netlify.app/
