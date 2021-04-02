@@ -1,13 +1,19 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import './loading.styles.css';
 
 const Loading = () => {
   return (
-    <div>
-      <span>Server is waking up. Just a moment</span>
-      <FontAwesomeIcon icon="spinner" spin />
-      <FontAwesomeIcon icon={['fab', 'apple']} />
-      {/* <i class="fas fa-sync fa-spin"></i> */}
-    </div>
+    <>
+      <Loader
+        className="loader"
+        type="Circles"
+        color="#00BFFF"
+        height={150}
+        width={150}
+      />
+      <h3>Server is waking up...</h3>
+    </>
   );
 };
 
