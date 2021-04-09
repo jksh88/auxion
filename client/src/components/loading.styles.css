@@ -2,6 +2,5 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  margin-top: -75px;
-  margin-left: -75px;
+  transform: translate(-50%, -50%);
 }
