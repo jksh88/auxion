@@ -7,11 +7,15 @@ let s3bucket = new AWS.S3({
   region: process.env.AWS_DEFAULT_REGION,
 });
 
-const s3uploader = (file) =>
-  new Promise((resolve, reject) => {
+const s3uploader = (file) => {
+  //s3bucket.upload does not natively provide promise, but uploading pics is an asynchronous operation between node backend and aws bucket. So, it has been promisified with 'new Promise()' syntax here.
+  return new Promise((resolve, reject) => {
     console.log('FILE argument: ', file);
     const [fileExtension] = file.originalname.split('.').slice(-1);
+    //destructure only the file extentions from the photos. split it by . delimiter first into array of filename and extention combination. and then just take the last part using Array.protoptype.slice, which gives you only the extension
     const filename = `${v4()}.${fileExtension}`;
+    //randomize the filename to avoid file name collisions. (ie, some pics might have same file names)
+    // https://paulrohan.medium.com/file-upload-to-aws-s3-bucket-in-a-node-react-mongo-app-and-using-multer-72884322aada
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
       Key: filename,
@@ -19,7 +23,8 @@ const s3uploader = (file) =>
       Body: file.buffer,
       ContentType: file.mimetype,
     };
-    //this whole file will from multer with its propertiers(buffer and mimetype, filename)
+    // https://www.npmjs.com/package/multer
+    //this whole file in the argument passed into this s3uploader function will come from multer with its propertiers(buffer and mimetype, filename)
     s3bucket.upload(params, (err, data) => {
       if (err) {
         reject(err);
@@ -27,6 +32,7 @@ const s3uploader = (file) =>
       resolve(data);
     });
   });
+};
 
 module.exports = s3uploader;
 //this 'err' object comes from AWS. AWS will respond with either error or data

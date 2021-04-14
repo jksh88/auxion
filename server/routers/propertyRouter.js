@@ -10,15 +10,15 @@ const s3uploader = require('./s3uploader');
 
 router.post('/listproperty', auth, async (req, res) => {
   const { address, description, startPrice, auctionEndTime } = req.body;
-  //newTODO: req.files are files coming from multer from front end. They need to be saved inot Cloudinary
-  //
   // const images = req.files (It's already made available by multer)
   // Create connection to S3 in another file and export upload pictures files(array of pics). The only role of this file is to provide upoload function to line15
   //line 22 needs to change to path to my bucket/filename
 
   const s3files = await Promise.all(req.files.map(s3uploader));
+  //multer grabbed all the image files transmitted from the client and put them into req object
   //s3 itself returns promise and Promise.all expects an array of promises as its argument. s3files will await the resolution of all the promises
-  //s3files is array of objects.
+  //s3files is an array of AWS responses that node backend keeps in variable (objects that become available once promises from AWS all get resolved).
+  //req.files provide an array of images by multer.
   console.log('S3FILES: ', s3files);
   const property = new PropertyModel({
     address: JSON.parse(address),
@@ -26,6 +26,8 @@ router.post('/listproperty', auth, async (req, res) => {
     images: s3files.map((file) => file.Location), //req.files is an array of objects. I need array of strings with strings being the names of the files
     owner: req.user.id,
   });
+  //Location is shown when response from AWS is logged on console. The word 'Location' is what AWS SDK uses.
+  //Location is the url of one individual image from the images of each property as saved in AWS bucket. Mongodb needs to sotre it in each document for the property.
   //The images of the newly created property document now needs to look through the s3files that were provided by AWS, and no more to req.files provided by multer from front-end
 
   // console.log('REQ.FILES: ', req.files);
@@ -50,6 +52,7 @@ router.post('/listproperty', auth, async (req, res) => {
     res.status(400).send(err);
   }
 });
+//Whenever a new property is created, aution starts automatically for that property. So, both property and autcion needs to be stored at the same time in mongodb.
 //Here, I don't need to find user from DB because auth middleware already has found the user from DB using the token received from the front-end.
 router.get('/properties', async (req, res) => {
   const properties = await PropertyModel.find({});

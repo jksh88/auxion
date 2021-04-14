@@ -9,7 +9,7 @@ const userRouter = require('./routers/userRouter');
 // const herokuCaffeine = require('./caffeine');
 
 app.use(cors());
-app.use(upload.array('file[]', 15)); //Since front-end used the 'file[]' fieldname, make it the consistent in backend as well. Also, use upload.array as is in multer doc
+app.use(upload.array('file[]', 15)); //Since front-end used the 'file[]' fieldname, make it the consistent in backend as well. Also, use upload.array as is in multer doc. If I upload only one file(e.g. profile picture) then use 'upload.single()'
 app.use(express.json());
 app.use(userRouter);
 app.use(propertyRouter);
