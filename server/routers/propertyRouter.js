@@ -17,7 +17,7 @@ router.post('/listproperty', auth, async (req, res) => {
   const s3files = await Promise.all(req.files.map(s3uploader));
   //multer grabbed all the image files transmitted from the client and put them into req object
   //s3 itself returns promise and Promise.all expects an array of promises as its argument. s3files will await the resolution of all the promises
-  //s3files is an array of AWS responses that node backend keeps in variable (objects that become available once promises from AWS all get resolved).
+  //s3files is an array of AWS responses that node backend keeps in variable (objects that become available once the promises from AWS all get resolved).
   //req.files provide an array of images by multer.
   console.log('S3FILES: ', s3files);
   const property = new PropertyModel({
@@ -26,7 +26,7 @@ router.post('/listproperty', auth, async (req, res) => {
     images: s3files.map((file) => file.Location), //req.files is an array of objects. I need array of strings with strings being the names of the files
     owner: req.user.id,
   });
-  //Location is shown when response from AWS is logged on console. The word 'Location' is what AWS SDK uses.
+  //Location is shown when response from AWS is logged on console. I tried doing it previously and that's how I found this word. The word 'Location' is what AWS SDK uses.
   //Location is the url of one individual image from the images of each property as saved in AWS bucket. Mongodb needs to sotre it in each document for the property.
   //The images of the newly created property document now needs to look through the s3files that were provided by AWS, and no more to req.files provided by multer from front-end
 
@@ -190,27 +190,27 @@ router.get('/properties/:id/bids', auth, async (req, res) => {
   }
 });
 
+//When it comes to images, here by edit I am only letting user add to the original array(? To do: check if AWS data type for photos is an array) and not replace or delete the previous ones.
 router.patch('/properties/:id/edit', auth, async (req, res) => {
   const { description, available, auctionEndTime } = req.body;
   const id = req.params.id;
-  const images = req.files.map(
-    (file) => `${process.env.OWN_URL}/images/${file.filename}`
-  );
+  // const images = req.files.map(
+  //   (file) => `${process.env.OWN_URL}/images/${file.filename}`
+  // );
+  const s3files = await Promise.all(req.files.map(s3uploader));
 
   //Remember it's what is coming from front-end through multer is not called "images". They are called "files". Look at editListingTerms or ListProperty components on front end. They are "files"
   //Multer doesn't know they are saved as "images" on the backend.
   //req.files?map doesn't work on the backend. Backend doesn't recognize this conditional chaining syntax yet.
   //Actually, no need to guard files because map works on empty array too.
   //formData ALWAYS creates and sends through to backend an array even if there's no files in the array
-  console.log('IMAGES FROM FE THRU MULTER: ', images);
+  // console.log('IMAGES FROM FE THRU MULTER: ', images);
   if (!req.user.properties.some((property) => property._id.toString() === id)) {
     console.log('REQ.USER**: ', req.user);
-    //TODO: this user came from auth middleware right?
     //TODO: How was poperties populated for user without manually populating?
     //TODO: Why is password not shown on backend terminal?
 
-    //TDODO: Forgot. Why use some again??
-    //TODO: Is it not property._id? Update: I changed it to _id and now it works. How did it work before when we tested with just id?
+    //TODO: Is it not property._id? Update: I changed it to _id and now it works. How did it work before when tested with just id?
 
     console.log('ID** at EDIT ROUTER: ', id);
     res.status(401).send('Unauthorized');

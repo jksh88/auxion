@@ -12,7 +12,7 @@ const s3uploader = (file) => {
   return new Promise((resolve, reject) => {
     console.log('FILE argument: ', file);
     const [fileExtension] = file.originalname.split('.').slice(-1);
-    //destructure only the file extentions from the photos. split it by . delimiter first into array of filename and extention combination. and then just take the last part using Array.protoptype.slice, which gives you only the extension
+    //destructure only the file extentions from the photos. split it by '.' delimiter first into array of filename and extention combination. and then just take the last part using Array.protoptype.slice, which gives you only the extension
     const filename = `${v4()}.${fileExtension}`;
     //randomize the filename to avoid file name collisions. (ie, some pics might have same file names)
     // https://paulrohan.medium.com/file-upload-to-aws-s3-bucket-in-a-node-react-mongo-app-and-using-multer-72884322aada
@@ -24,7 +24,7 @@ const s3uploader = (file) => {
       ContentType: file.mimetype,
     };
     // https://www.npmjs.com/package/multer
-    //this whole file in the argument passed into this s3uploader function will come from multer with its propertiers(buffer and mimetype, filename)
+    //this whole file in the argument passed into this s3uploader function will come from multer with its properties(buffer and mimetype, filename)
     s3bucket.upload(params, (err, data) => {
       if (err) {
         reject(err);
